@@ -1,0 +1,38 @@
+@charset "ISO-8859-1";
+
+.div-container-principal{
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, auto));
+	grid-template-rows: auto auto auto auto 1fr 1fr;
+	gap: 0.2px 0.2px; 
+	grid-template-areas: 
+	"titlu			titlu			titlu			titlu			titlu"
+	". 				add-cautare		add-cautare		add-cautare		."
+	".				tabel			tabel			tabel			."
+	".				tabel			tabel			tabel			."
+	".				pagini			pagini			pagini			."
+	".				.				.				.				.";
+	height: 100vh;
+}
+
+.titlu{
+	grid-area: titlu;
+	display: flex;
+	font-size:3vw;
+	justify-content: center;
+	align-items: center;
+    background:cyan;
+}
+
+.div-adauga-si-cautare{
+	grid-area: add-cautare;
+	margin-bottom: 0.7vh;
+}
+
+#tabel{
+	grid-area: tabel;
+}
+
+.pagini{
+	grid-area: pagini;
+}

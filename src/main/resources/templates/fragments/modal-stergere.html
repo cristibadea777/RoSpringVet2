@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<!-- Modal stergere animal -->
+<div th:fragment="modal-stergere" class="modal fade" th:id="*{'modalStergeAnimal'+{animal.animalId}}" tabindex="-1" role="dialog" aria-labelledby="modalStergeAnimal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h2 class="modal-title w-100" id="titlu" th:text="'Șterge animalul - '+ ${animal.nume}"></h2>
+        <div class="col-md-5 col-xs-7">
+      		<img 	th:id="*{'input-imagine-edit'+{animal.animalId}}"  class="img-responsive"
+					src="../static/images/photo.png"
+					th:src="@{/resources/poze_animale/{img}(img=${animal.imagine != null ? animal.imagine : 'animal_default.png'} ) }" 
+					style="height: 30vh; 
+					max-width: 25vh; 
+					border-radius: 50%; 
+					border: 0.2vh solid #00FFFF;" />
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&cross;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/stergereAnimal" method="get">
+          <h3>Ești sigur că vrei să ȘTERGI animalul? </h3>
+          <br>
+          <h5 th:text="|Nume: '${animal.nume}' |"></h5>
+          <h5 th:text="|Număr vizite: '${animal.vizite.size()}' |"></h5>
+          <h5 th:text="|Număr programări: '${animal.programari.size()}' |"></h5>
+          <h5 style="color: green">Animalul având vizite, va fi trecut ca decedat. menționează cauza decesului</h5>
+          <div class="form-group">
+            <!--ID este hidden -->
+            <input type="text" th:value="*{animal.animalId}" class="form-control" name="animalId" hidden="true">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+        <button type="submit" class="btn btn-danger">Șterge!</button>
+      </div>
+      <!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+      <!--Nr paginii -->
+      <input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+      <!--Numele campului dupa care se face sortarea -->
+      <input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+      <!--Directia sortarii-->
+      <input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+      <!--Numele vederii-->
+      <!--Numele vederii-->
+      <input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true">
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

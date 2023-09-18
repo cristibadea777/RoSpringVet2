@@ -1,0 +1,68 @@
+@charset "ISO-8859-1";
+
+.div-container-principal{
+	display: grid;
+	grid-template-columns:  1fr auto 1fr;
+	grid-template-rows: auto 1fr 1fr;
+	gap: 0.2px 0.2px; 
+	grid-template-areas: 
+	"titlu	titlu	titlu"
+	"info	.		statistici"
+	"info	.		statistici";
+	min-height: 100vh;
+}
+
+
+.titlu{
+	grid-area: titlu;
+	display: flex;
+	font-size:3vw;
+	justify-content: center;
+	align-items: center;
+    background:cyan;
+}
+
+.div-informatii{ grid-area: info;       }
+.div-statistici{ grid-area: statistici; }
+.div-informatii, .div-statistici{
+	padding-top:  3vh;
+	padding-left: 3vw;
+	padding-right: 3vw;
+}
+
+.stanga{
+	text-align: left; 
+	width: 40%;
+	font-size:1.7em;
+	font-weight: bold;
+	border-style: solid;
+	text-overflow: ellipsis;
+}
+.dreapta{
+	text-align: left; 
+	width: 60%;
+	font-size:1.7em;
+	border-style: solid;
+	text-overflow: ellipsis;
+}
+
+.btn-group .btn {
+  height: 50px; /* adjust the height value as needed */
+}
+
+.div-footer{
+	grid-area: footer;
+	background: #383c44;
+	min-height: 5vh;
+	font-size:2em;
+	display: flex;
+	justify-content: right;
+	align-items: center;
+}
+
+.div-poza{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+

@@ -1,0 +1,138 @@
+<!DOCTYPE>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title>RoSpringVet</title>
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- CSS nostru -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <!-- Pentru glyphicon-uri -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- JS ca sa mearga modal-ul cu bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <!-- Ca sa mearga DateTimePicker-ul -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+    <!-- Date-pickerul jQuery pentru a alege data fara timp cand facem cautarea-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <!-- Nu includ: <script src="https://code.jquery.com/jquery-1.12.4.js"></script> Face conflict cu alta versiune, cea de la bootstrap si nu arata modalu-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+<body>
+
+<!-- th replace pt navbar -->
+<div th:replace="fragments/topnavbar :: navbar3">
+</div>
+
+<div class="div-container-principal">
+
+
+<h1 class="titlu" th:text="Dashboard"></h1>
+
+
+
+<div class="div-informatii">
+<table class="table table-responsive-md table-hover">
+	<thead>
+	</thead>
+	<tbody>
+		<tr>
+			<td style="height: 25vh"> 
+				<div class="div-poza">
+					<img class="img-responsive" th:src="@{/resources/poze_angajati/{img}(img=${angajat.imagine != null ? angajat.imagine : 'angajat_default.png'} ) }" 
+				      	width="1000" 
+				      	style="
+							height: 25vh; 
+							max-width: 25vh; 
+							border-radius: 50%; 
+							border: 0.2vw solid #00FFFF;" 
+					/>
+				</div>
+			 </td>
+		</tr>
+		<tr>
+			<td class="stanga"> <p  th:text="'Utilizator  '"></p></td>
+			<td class="dreapta"><p  th:text="${nume_angajat}"></p></td>
+		</tr>
+		<tr>
+			<td class="stanga"> <p  th:text="'Funcție  '"></p></td>
+			<td class="dreapta"><p  th:text="${angajat.functie}"></p></td>
+		</tr>
+		<tr>
+			<td class="stanga"><p  th:text="'Nr telefon '" ></p></td>
+			<td class="dreapta"><p th:text="${angajat.nrtelefon}"></p></td>
+		</tr>
+		<tr>
+			<td class="stanga"><p  th:text="'Mail '"></p></td>
+			<td class="dreapta"><p  th:text="${angajat.email}"></p></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td class="btn-group d-flex align-items-center">
+			  <div style="width: 50%; padding-right: 1vw;">
+			    <button type="button" id="buton-setari" class="btn btn-info btn-block">Setări <i class="fas fa-cog"></i></button>
+			  </div>
+			  <div style="width: 50%; padding-left: 1vw;">
+			    <button type="button" id="buton-editare" class="btn btn-primary btn-block" data-toggle="modal" th:attr="data-target='#modalUpdateAngajat'+*{angajat.angajatId}">Editează <i class="fas fa-edit"></i></button>
+			  </div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+
+<div class="div-statistici">
+<table class="table table-responsive-md table-hover">
+	<thead>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="stanga"><p class="statistici-1" th:text="'Programări AZI '"></p></td>
+			<td class="dreapta text-center"><a class="statistici-2" href="/programariAzi" th:text="${programariAzi}"></a></td>
+		</tr>
+		<tr>
+			<td class="stanga"><p class="statistici-1" th:text="'Programări MÂINE '"></p></td>
+			<td class="dreapta text-center"><a class="statistici-2" th:href="@{/programariMaine}" th:text="${programariMaine}"></a></td>
+		</tr>
+		<tr>
+			<td class="stanga"><p class="statistici-1" th:text="'Total angajați '"></p></td>
+			<td class="dreapta text-center"><a class="statistici-2" href="/angajati" th:text="${totalAngajati}"></a></td>
+		</tr>
+		<tr>
+			<td class="stanga"><p class="statistici-1" th:text="'Total stăpâni '"></p></td>
+			<td class="dreapta text-center"><a class="statistici-2" href="/stapani" th:text="${totalStapani}"></a></td>
+		</tr>
+		<tr>
+			<td class="stanga"><p class="statistici-1" th:text="'Total animale '"></p></td>
+			<td class="dreapta text-center"><a class="statistici-2" href="/animale" th:text="${totalAnimale}"></a></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+</div>
+
+<div class="div-footer">
+	<a href="https://www.cristianbadea.online"> Creator - Badea Cristian Narcis </a>
+</div>
+
+<div th:replace="fragments/modal-update-angajat :: modal-update-angajat"></div>	
+
+<script th:inline="javascript" th:if="${zeroInregistrari}">
+			//alerta
+			alert("Zero inregistrari"); 
+</script>
+
+
+</body>
+</html>

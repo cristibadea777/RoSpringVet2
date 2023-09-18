@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<!-- Modal confirmare programare -->
+<div th:fragment="modal-confirmare-programare" class="modal" th:id="*{'modalConfirmareProgramare'+{programare.programareId}}" tabindex="-1" role="dialog" aria-labelledby="#modalConfirmareProgramare" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			
+			<div class="modal-header">
+				<div class="child">
+					<h2 class="modal-title" id="titlu"> Confirmă programarea </h2>
+					<h2>&nbsp;</h2>
+					<h4 th:text="|Data: ${#dates.format(programare.date, 'dd MMMM yyyy hh:mm')}|"></h4>
+					<h4 th:text="|Stăpânul  ${programare.stapanId.firstname}  ${programare.stapanId.lastname}|"></h4>
+					<h4 th:text="|Animalul:  ${programare.animalId.nume}|"></h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&cross;</span>
+				</button>
+			</div>
+
+			<div class="modal-body" style="display: flex; align-items: center; justify-content: left;">
+
+			<form action="/confirmareProgramare" method="POST" th:onsubmit="|schimbaButonSubmitConfirmare(${programare.programareId});|">
+					<h3>Confirmi programarea ?</h3>
+					<br>
+					
+					<div class="form-group">
+						<!--ID este hidden -->
+						<input type="text" th:value="*{programare.programareId}"
+							class="form-control" name="programareId" hidden="true">
+					</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-dismiss="modal">Închide</button>
+				<button 
+						th:id="'butonSubmitConfirmareProg' + ${programare.programareId}" 
+						type="submit" class="btn btn-warning">Confirmă<i class="fas fa-check"></i></button>
+			</div>
+
+
+			<!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+			<!--Nr paginii -->
+			<input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+			<!--Numele campului dupa care se face sortarea -->
+			<input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+			<!--Directia sortarii-->
+			<input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+			<!--Numele vederii-->
+			<input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true">
+			<!--Data-->
+			<input type="text" th:value="${data}" class="form-control" name="data" hidden="true">
+
+			</form>
+		</div>
+	</div>
+	
+	 <script th:inline="javascript">
+		//scripturi pt elemente
+		
+		function schimbaButonSubmitConfirmare(idProgramare) {
+			btn = document.getElementById("butonSubmitConfirmareProg" + idProgramare);
+			btn.innerHTML = '<i class = "fa fa-cog fa-spin"></i> Vă rugăm așteptați...';
+			btn.disabled=true;
+		}
+	</script>
+	
+	
+</div>
+
+
+
+</body>
+</html>

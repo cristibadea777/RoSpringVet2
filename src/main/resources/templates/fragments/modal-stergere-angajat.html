@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!-- Modal reangajare -->
+<div class="modal fade" th:fragment="modal-stergere-angajat" th:id="*{'modalStergeAngajat'+{angajat.angajatId}}" tabindex="-1" role="dialog" aria-labelledby="modalStergeAngajat" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titlu" th:text="'Ștergi pe - ' + ${angajat.firstname} + ' ' + ${angajat.lastname} + ' ?'"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&cross;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/stergere" method="get">
+          <h5>Ești sigur?</h5>
+          <br>
+          <h5 th:text="|Număr vizite: '${angajat.vizite.size()}'|"></h5>
+          <div class="form-group">
+            <!--ID este hidden -->
+            <input type="text" th:value="*{angajat.angajatId}" class="form-control" name="angajatId" hidden="true">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+        <button type="submit" class="btn btn-danger">Șterge</button>
+      </div>
+      <!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+      <!--Nr paginii -->
+      <input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+      <!--Numele campului dupa care se face sortarea -->
+      <input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+      <!--Directia sortarii-->
+      <input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+      <!-- Field cautare -->
+      <input type="text" th:value="${fieldSearch}" class="form-control" name="fieldSearch" hidden="true">
+      <!-- Text cautare -->
+      <input type="text" th:value="${txtSearch}" class="form-control" name="txtSearch" hidden="true">
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

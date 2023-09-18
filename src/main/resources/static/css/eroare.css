@@ -1,0 +1,29 @@
+@charset "ISO-8859-1";
+
+.container-principal{
+	display: grid;
+	grid-template-columns:  repeat(4, minmax(0, auto));
+	grid-template-rows: 1 auto auto auto auto;
+	gap: 0.2px 0.2px; 
+	grid-template-areas: 
+	".				.				.				"
+	". 				text			poza			"
+	".				text			acasa			"
+	".				.				.				"
+	".				.				.				";
+	min-height: 100vh;
+}
+
+.text{
+	grid-area: text;
+}
+
+.poza{
+	grid-area: poza;
+	display: flex;
+	align-items: center;
+}
+
+.acasa{
+	grid-area: acasa;
+}

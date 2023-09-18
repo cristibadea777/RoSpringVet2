@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+
+<!-- Modal update tratament-->
+<div th:fragment="modal-update-tratament" class="modal" th:id="*{'modalUpdateTratament'+{tratament.tratamentId}}" tabindex="-1" role="dialog" aria-labelledby="#modalUpdateTratament" aria-hidden="true">
+  <!-- arata modal daca modalul trimis are erori (URL-ul contine parametrul err)-->
+  <script th:inline="javascript" th:if="${errtratament} != null">
+    var id = /*[[${idModal}]]*/ 0;
+    $("#modalUpdateTratament" + id).modal("show");
+  </script>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titlu" th:text="'Editează tratamentul pentru - ' + ${tratament.animalId.nume}"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&cross;</span>
+        </button>
+      </div>
+      <form action="/editareTratament" object=tratament method="POST" th:onsubmit="|schimbaButonSubmitEditare(${tratament.tratamentId});|" />
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-5 col-xs-7">
+            <h5 class="modal-title" th:text="'Stăpânul: ' + ${tratament.animalId.stapanId.firstname} + ' ' +  ${tratament.animalId.stapanId.lastname}"></h5>
+            <h5 class="modal-title" th:text="'Animalul: ' + ${tratament.animalId.nume}"></h5>
+          </div>
+          <div class="col-md-1 col-xs-7"></div>
+          <div class="col-md-5 col-xs-7">
+            <img 
+            	class="img-responsive" 			
+            	th:src="@{/resources/poze_animale/{img}(img=${tratament.animalId.imagine != null ? tratament.animalId.imagine : 'animal_default.png'} ) }" 
+            	width="1000" 
+            	style="
+				height: 17vh; 
+				max-width: 17vh; 
+				border-radius: 50%; 
+				border: 0.2vw solid #00FFFF;" 
+			/>
+          </div>
+          <div class="col-md-12 col-xs-14">
+            <h4>Dată sfârșit</h4>
+            <div class="form-group">
+              <div class="input-group date" th:id="'datetimepickerDataTratament' + ${tratament.tratamentId}" data-target-input="nearest">
+                <input type="text" th:field="*{tratament.datasfarsit}" class="form-control datetimepicker-input" th:data-target="'#datetimepickerDataTratament'+ ${tratament.tratamentId}" />
+                <div class="input-group-append" th:data-target="'#datetimepickerDataTratament'+ ${tratament.tratamentId}" data-toggle="datetimepicker" >
+                  <div class="input-group-text">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+              $(function() {
+                var id = /*[[${tratament.tratamentId}]]*/ 0;
+                $('#datetimepickerDataTratament' + id).datetimepicker();
+              });
+            </script>
+          </div>
+
+          <div class="col-md-12 col-xs-14">
+            <h4>Metoda tratament</h4>
+            <textarea type="text" th:value="*{tratament.metodatratament}" th:text="*{tratament.metodatratament}" name="metodatratament" class="form-control " rows="5"></textarea>
+          </div>
+        </div>
+        <!-- eroare data si ora -->
+        <div style="text-align: center" th:if="${errdatasfarsit} != null" class="alert alert-danger">
+          <span class="error">
+            <h4 class="text-danger">Selectează data și ora încetare tratament!</h4>
+          </span>
+        </div>
+        <!-- eroare metoada tratament-->
+        <div style="text-align: center" th:if="${errmetodatratament} != null" class="alert alert-danger">
+          <span class="error">
+            <h4 class="text-danger">Nu lăsa metoda de tratament goală!</h4>
+          </span>
+        </div>
+       
+        <!-- camppuri de input ascunse pt Tratament-->
+        <!-- id tratament -->
+        <input th:value="${tratament.tratamentId}" name="tratamentId" type="hidden" />
+        <!-- id animal -->
+        <input th:value="${tratament.animalId.animalId}" name="animalId" type="hidden" />
+        <!-- id vizita -->
+        <input th:value="${tratament.vizitaId.vizitaId}" name="vizitaId" type="hidden" />
+        <!-- id diagnostic -->
+        <input th:value="${tratament.diagnosticId.diagnosticId}" name="diagnosticId" type="hidden" />
+        
+        <!-- ~~~ Pentru redirectionare pagina curenta si camp sortat, numele vederii si data~~~ -->
+        <!--Nr paginii -->
+        <input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+        <!--Numele campului dupa care se face sortarea -->
+        <input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+        <!--Directia sortarii-->
+        <input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+        <!--Numele vederii-->
+        <input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true">
+        <!--Text Search-->
+        <input type="text" th:value="${txtSearch}" class="form-control" name="txtSearch" hidden="true">
+        <!--Field Search-->
+        <input type="text" th:value="${fieldSearch}" class="form-control" name="fieldSearch" hidden="true">
+        <!-- Pentru a nu lasa utilizatorul sa dea click de doua ori pe butonul de submit (butonSubmitEditareProg) si pentru a-l informa ca formularul se proceseaza si trebuie sa astepte, -->
+        <!-- atunci cand se apasa butonul de submit acesta se va dezactiva, pana ce vine raspunsul de la controller. -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+          <button th:id="'butonSubmitEditareProg' + ${tratament.tratamentId}" type="submit" class="btn btn-primary">Salvează</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

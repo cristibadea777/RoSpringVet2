@@ -1,0 +1,55 @@
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+      </head>
+      <body>
+        <!-- EXPLICATII BOTSTRAP - mr-1 si mb-1 		= pt spatiere (margini) -->
+        <!-- EXPLICATII BOTSTRAP - btn-block 		= pt marime butoane, sa ocupe tot spatiul parintelui  -->
+        <!-- EXPLICATII BOTSTRAP - my-auto           = pt asezare automata centrare vertical centru-->
+        <!-- Modal detalii animal obiect TRATAMENT-->
+        <!-- Modal detalii animal obiect TRATAMENT-->
+        <!-- Modal detalii animal obiect TRATAMENT-->
+        <div class="modal fade" th:fragment="modal-diagnostic-animal" th:id="*{'modalDiagnosticAnimal'+{tratament?.tratamentId}}" role="dialog" aria-labelledby="#modalDiagnosticAnimal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="titlu" th:text="'Diagnosticul pentru - ' + ${tratament?.animalId?.nume}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&cross;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <div class="row">
+                  <!-- ROW 1 COL 1-->
+                  <!-- ROW 1 COL 1-->
+                  <div class="col my-auto text-center">
+                    <img th:id="*{'input-imagine-profil'+{tratament?.animalId?.animalId}}" class="img-responsive" src="../static/images/photo.png" th:src="@{/resources/poze_animale/{img}(img=${tratament?.animalId?.imagine != null ? tratament?.animalId?.imagine : 'animal_default.png'} ) }" 
+                    		style="height: 15vh; 
+                    		max-width: 15vh; 
+                    		border-radius: 50%; 
+                    		border: 0.2vw solid #00FFFF;" />
+                  </div>
+                </div>
+                  <!-- ROW 1 COL 2-->
+                  <!-- ROW 1 COL 2-->
+                <div class="row">
+                  <div class="col my-auto">
+					<!-- DIAGNOSTIC -->
+					<h4>Diagnostic</h4>
+		            <textarea type="text" style="color: blue;" th:text="*{tratament?.diagnosticId?.diagnostic}" class="form-control " rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-block text-center" data-dismiss="modal">Închide</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </body>
+</html>
+       

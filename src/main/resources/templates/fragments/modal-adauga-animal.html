@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<!-- Modal adauga animal nou-->
+<div class="modal" th:fragment="modal-adauga-animal" th:id="*{'modalAdaugaAnimal'+{stapan.stapanId}}" tabindex="-1" role="dialog" aria-labelledby="modalAdaugaAnimal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!-- form-->
+      <form action="#" th:action="@{/adaugaAnimalStapan/{id}(id=${stapan.stapanId})}" th:object="${animal}" method="POST" enctype="multipart/form-data">
+        <!-- modal header -->
+        <div class="modal-header" style="word-break: break-all; white-space: wrap;">
+          <span>
+            <h4 style="word-break: break-all;">Adaugă un animal nou pentru stăpânul</h4>
+            <h4 class="modal-title" id="exampleModalLongTitle" th:text="${stapan.firstname} + ' ' + ${stapan.lastname}"></h4>
+          </span>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&cross;</span>
+          </button>
+        </div>
+        <!-- modal body -->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-5 col-xs-6">
+              <!-- arata modal daca modalul trimis are erori (contine parametrul err)-->
+              <script th:inline="javascript" th:if="${errAddAnimal} != null">
+                var id = /*[[${idModal}]]*/ 0;
+                $("#modalAdaugaAnimal" + id).modal("show"); 
+              </script>
+              
+              <label th:for="'nume' + ${stapan.stapanId}">Nume</label>
+              <input 
+              		type="text" 
+              		th:field="*{nume}"
+              		th:id="'nume' + ${stapan.stapanId}" 
+              		class="form-control mb-4 col-7s">
+              <!-- mesaj eroare nume-->
+              <div th:if="${errnume} != null">
+                <div class="alert alert-danger">
+                  <p class="text-danger">Completează corect</p>
+                </div>
+              </div>
+              
+              <label th:for="'specie' + ${stapan.stapanId}">Specie</label>
+              <input 
+              		type="text" 
+              		th:field="*{specie}" 
+              		th:id="'specie' + ${stapan.stapanId}"
+              		class="form-control mb-4 col-7s">
+              <!-- mesaj eroare specie-->
+              <div th:if="${errspecie} != null">
+                <div class="alert alert-danger">
+                  <p class="text-danger ">Completează corect</p>
+                </div>
+              </div>
+              
+              <label th:for="'rasa' + ${stapan.stapanId}">Rasă</label>
+              <input 
+              		type="text" 
+              		th:field="*{rasa}" 
+              		th:id="'rasa' + ${stapan.stapanId}"
+              		class="form-control mb-4 col-7s">
+              
+              <!-- hidden field id stapan -->
+              <input th:value="${stapan.stapanId}" name="stapanId" type="hidden" />
+            
+            </div>
+            <div class="col-md-5 col-xs-6">
+              <div class="col-md-5 col-xs-6">
+             	<img 	
+             		th:id="'input-imagine-adauga-animal'+${stapan.stapanId}" 
+					class="img-responsive"
+					src="../static/images/photo.png"
+					th:src="@{/resources/poze_animale/{img}(img=${animal.imagine != null ? animal.imagine : 'animal_default.png'} ) }" 
+					style="height: 30vh; 
+					max-width: 30vh; 
+					border-radius: 50%; 
+					border: 0.2vw solid #00FFFF;" />	
+                <br>
+                <br>
+                <!-- Adaugam style="display: none" input-ului. Nu il afisam pentru ca noi stilizam label-ul ce apartine de el, nu input-ul in sine. -->
+                
+                <!--FILA MULTIPART DIN FORM, O IA CONTROLLERUL CU AJUTORUL "name"-->
+                <input 
+                	th:id="'file-input' + ${stapan.stapanId}" 
+                	type="file" 
+                	name="imageFile"  
+                	accept="image/png, image/jpg" 
+                	th:onchange="|citesteImagineAdaugaURL(this,'${stapan.stapanId}');|"
+                	style="display: none">
+                <label th:for="'file-input' + ${stapan.stapanId}" class="btn btn-info">Selectează o poză <i class="fas fa-upload"></i> </label>
+                
+                <!-- Imaginea citita se va incarca direct pe ecran in tag-ul "'input-imagine-adauga-animal'+${stapan.stapanId}". Folosim o functie JavaScript pentru asta. -->
+                <!-- Imaginea incarcata va fi trimisa catre controller sub forma unui obiect de tip MultipartFile. Pentru asta am adaugat si enctype="multipart/form-data" metoda de encriptare pentru form. -->
+                <!-- In controller imaginea se seteaza numele corespunzator imaginii, se salveaza in folder si se seteaza animalului. -->
+              </div>
+              <!-- mesaj eroare poza -->
+              <div th:if="${errpoza} != null">
+                <div class="alert alert-danger">
+                  <p class="text-danger ">Nu am putut încărca poza. Fișiere permise: .jpg și .png</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- modal footer -->
+        <div style="text-align: center" class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+          <button type="submit" class="btn btn-info col-5 ml-auto">Salvează animalul</button>
+        </div>
+        <!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+        <!--Nr paginii -->
+        <input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+        <!--Numele campului dupa care se face sortarea -->
+        <input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+        <!--Directia sortarii-->
+        <input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+        <!-- Field cautare -->
+        <input type="text" th:value="${fieldSearch}" class="form-control" name="fieldSearch" hidden="true">
+        <!-- Text cautare -->
+        <input type="text" th:value="${txtSearch}" class="form-control" name="txtSearch" hidden="true">
+        <!-- Nume View -->
+        <input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true">
+      </form>
+    </div>
+  </div>
+  
+ 	<!-- Script JavaScript pentru a pune imaginea selectata in div-ul "input-imagine" pentru modalul de adaugare animal. -->
+    <script th:inline="javascript">
+      function citesteImagineAdaugaURL(input, idStapan) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+        	  $('#input-imagine-adauga-animal' + idStapan).attr('src', e.target.result);
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    </script>
+  
+</div>
+
+</body>
+</html>

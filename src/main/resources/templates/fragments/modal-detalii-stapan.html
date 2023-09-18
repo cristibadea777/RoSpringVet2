@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+  
+  
+  
+      
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANIMALE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANIMALE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANIMALE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  
+  
+    <!-- Modal detalii-->
+    <div class="modal fade" th:fragment="modal-detalii-stapan" th:id="*{'modalDetaliiStapan'+{animal.animalId}}" tabindex="-1" role="dialog" aria-labelledby="#modalDetaliiStapan" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="titlu" th:text="'Detaliile stăpânului lui ' + ${animal.nume}"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <div class="row">
+              <!-- ROW 1 COL 1-->
+              <!-- ROW 1 COL 1-->
+              <div class="col my-auto text-center">
+                <img th:id="*{'input-imagine-profil'+{animal.stapanId.stapanId}}"
+                		th:src="@{/resources/poze_stapani/{img}(img=${animal.stapanId.imagine != null ? animal.stapanId.imagine : 'stapan_default.png'} ) }"
+                 		class="img-responsive" src="../static/images/photo.png"
+                   		style="height: 25vh; max-width: 25vh; border-radius: 50%; border: 0.2vw solid #00FFFF;" />
+              </div>
+              <!-- ROW 1 COL 2-->
+              <!-- ROW 1 COL 2-->
+              <div class="col my-auto">
+                <div class="row">
+                  <div class="col">
+                    <strong>Nume</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="|${animal.stapanId.firstname} ${animal.stapanId.lastname}|"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Nr Telefon</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${animal.stapanId.nrtelefon}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Email</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${animal.stapanId.email}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total animale</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${animal.stapanId.animale.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total vizite</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${animal.stapanId.vizite.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Programări </strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${animal.stapanId.programari.size()}"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <div class="row" style="white-space: nowrap;">
+              <div class="col">
+                <div class="row justify-content-start">
+                  <a th:href="@{/veziAnimaleStapan/{id}(id=${animal.stapanId.stapanId})}" class="btn btn-info mr-1 mb-1 btn-block"> Vezi animale <i class="fas fa-search"></i>
+                  </a>
+                </div>
+                <div class="row justify-content-start">
+                  <a th:href="@{/viziteStapan/{id}(id=${animal.stapanId.stapanId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Vezi Vizite <i class="fas fa-scroll"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row justify-content-end">
+                  <a th:href="@{/programariStapan/{id}(id=${animal.stapanId.stapanId})}" class="btn btn-warning mr-1 mb-1 btn-block"> Programări Confirmate <i class="far fa-clock"></i>
+                  </a>
+                </div>
+
+                <div class="row  justify-content-end">
+				  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamenteStapan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Tratamente Animale <i class="fas fa-syringe"></i>
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamenteStapan">
+				    <a th:href="@{/tratamenteActiveStapan/{id}(id=${animal.stapanId.stapanId})}"  class="dropdown-item "> Active </a>
+				    <a th:href="@{/tratamenteVechiStapan/{id}(id=${animal.stapanId.stapanId})}"   class="dropdown-item "> Vechi  </a>
+				  </div>
+                </div>
+ 
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Închide</button>
+		  </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ STAPANI ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ STAPANI ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ STAPANI ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    
+    <!-- Modal detalii stapan - pt pagina stapani-->
+    <div class="modal fade" th:fragment="modal-detalii-stapan-stapani" th:id="*{'modalDetaliiStapanStapani'+{stapan.stapanId}}" tabindex="-1" role="dialog" aria-labelledby="#modalDetaliiStapanStapani" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="titlu" th:text="'Stăpânul ' + ${stapan.firstname} + ' ' + ${stapan.lastname}"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <div class="row">
+              <!-- ROW 1 COL 1-->
+              <!-- ROW 1 COL 1-->
+              <div class="col my-auto text-center">
+                <img th:id="*{'input-imagine-profil'+{stapan.stapanId}}"
+                		th:src="@{/resources/poze_stapani/{img}(img=${stapan.imagine != null ? stapan.imagine : 'stapan_default.png'} ) }"
+                 		class="img-responsive" src="../static/images/photo.png"
+                 		style="height: 25vh; max-width: 25vh; border-radius: 50%; border: 0.2vw solid #00FFFF;">
+              </div>
+              <!-- ROW 1 COL 2-->
+              <!-- ROW 1 COL 2-->
+              <div class="col my-auto">
+                <div class="row">
+                  <div class="col">
+                    <strong>Nume</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="|${stapan.firstname} ${stapan.lastname}|"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Nr Telefon</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${stapan.nrtelefon}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Email</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${stapan.email}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total animale</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${stapan.animale.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total vizite</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${stapan.vizite.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Programări </strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${stapan.programari.size()}"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <div class="row" style="white-space: nowrap;">
+              <div class="col">
+                <div class="row justify-content-start">
+                  <a th:href="@{/veziAnimaleStapan/{id}(id=${stapan.stapanId})}" class="btn btn-info mr-1 mb-1 btn-block"> Vezi animale <i class="fas fa-search"></i>
+                  </a>
+                </div>
+                <div class="row justify-content-start">
+                  <a th:href="@{/viziteStapan/{id}(id=${stapan.stapanId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Vezi Vizite <i class="fas fa-scroll"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row justify-content-end">
+                  <a th:href="@{/programariStapan/{id}(id=${stapan.stapanId})}" class="btn btn-warning mr-1 mb-1 btn-block"> Programări Confirmate <i class="far fa-clock"></i>
+                  </a>
+                </div>
+                
+                
+                <div class="row  justify-content-end">
+				  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamenteStapan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Tratamente Animale <i class="fas fa-syringe"></i>
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamenteStapan">
+				    <a th:href="@{/tratamenteActiveStapan/{id}(id=${stapan.stapanId})}"  class="dropdown-item "> Active </a>
+				    <a th:href="@{/tratamenteVechiStapan/{id}(id=${stapan.stapanId})}"   class="dropdown-item "> Vechi  </a>
+				  </div>
+                </div>
+             
+             
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Închide</button>
+		  </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ VIZITA ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ VIZITA ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ VIZITA ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    
+    <!-- Modal detalii stapan - pt pagina vizite-->
+    <div class="modal fade" th:fragment="modal-detalii-stapan-vizita" th:id="*{'modalDetaliiStapanVizita'+{vizita.stapanId.stapanId}}" tabindex="-1" role="dialog" aria-labelledby="#modalDetaliiStapanVizita" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="titlu" th:text="'Stăpânul ' + ${vizita.stapanId.firstname} + ' ' + ${vizita.stapanId.lastname}"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <div class="row">
+              <!-- ROW 1 COL 1-->
+              <!-- ROW 1 COL 1-->
+              <div class="col my-auto text-center">
+                <img th:id="*{'input-imagine-profil'+{vizita.stapanId.stapanId}}"
+                		th:src="@{/resources/poze_stapani/{img}(img=${vizita.stapanId.imagine != null ? vizita.stapanId.imagine : 'stapan_default.png'} ) }"
+                 		class="img-responsive" src="../static/images/photo.png"
+                 		style="height: 25vh; max-width: 25vh; border-radius: 50%; border: 0.2vw solid #00FFFF;">
+
+              </div>
+              <!-- ROW 1 COL 2-->
+              <!-- ROW 1 COL 2-->
+              <div class="col my-auto">
+                <div class="row">
+                  <div class="col">
+                    <strong>Nume</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="|${vizita.stapanId.firstname} ${vizita.stapanId.lastname}|"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Nr Telefon</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${vizita.stapanId.nrtelefon}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Email</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${vizita.stapanId.email}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total animale</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${vizita.stapanId.animale.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total vizite</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${vizita.stapanId.vizite.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Programări </strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${vizita.stapanId.programari.size()}"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <div class="row" style="white-space: nowrap;">
+              <div class="col">
+                <div class="row justify-content-start">
+                  <a th:href="@{/veziAnimaleStapan/{id}(id=${vizita.stapanId.stapanId})}" class="btn btn-info mr-1 mb-1 btn-block"> Vezi animale <i class="fas fa-search"></i>
+                  </a>
+                </div>
+                <div class="row justify-content-start">
+                  <a th:href="@{/viziteStapan/{id}(id=${vizita.stapanId.stapanId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Vezi Vizite <i class="fas fa-scroll"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row justify-content-end">
+                  <a th:href="@{/programariStapan/{id}(id=${vizita.stapanId.stapanId})}" class="btn btn-warning mr-1 mb-1 btn-block"> Programări Confirmate <i class="far fa-clock"></i>
+                  </a>
+                </div>
+                <div class="row  justify-content-end">
+				  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamenteStapan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Tratamente Animale <i class="fas fa-syringe"></i>
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamenteStapan">
+				    <a th:href="@{/tratamenteActiveStapan/{id}(id=${vizita.stapanId.stapanId})}"  class="dropdown-item "> Active </a>
+				    <a th:href="@{/tratamenteVechiStapan/{id}(id=${vizita.stapanId.stapanId})}"   class="dropdown-item "> Vechi  </a>
+				  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Închide</button>
+		  </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ PROGRAMARE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ PROGRAMARE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ PROGRAMARE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+     <!-- Modal detalii stapan - pt pagina programari-->
+    <div class="modal fade" th:fragment="modal-detalii-stapan-programare" th:id="*{'modalDetaliiStapanProgramare'+{programare.stapanId.stapanId}}" tabindex="-1" role="dialog" aria-labelledby="#modalDetaliiStapanProgramare" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="titlu" th:text="'Stăpânul ' + ${programare.stapanId.firstname} + ' ' + ${programare.stapanId.lastname}"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <div class="row">
+              <!-- ROW 1 COL 1-->
+              <!-- ROW 1 COL 1-->
+              <div class="col my-auto text-center">
+                <img th:id="*{'input-imagine-profil'+{programare.stapanId.stapanId}}"
+                		th:src="@{/resources/poze_stapani/{img}(img=${programare.stapanId.imagine != null ? programare.stapanId.imagine : 'stapan_default.png'} ) }"
+                 		class="img-responsive" src="../static/images/photo.png"
+                 		style="height: 25vh; max-width: 25vh; border-radius: 50%; border: 0.2vw solid #00FFFF;">
+
+              </div>
+              <!-- ROW 1 COL 2-->
+              <!-- ROW 1 COL 2-->
+              <div class="col my-auto">
+                <div class="row">
+                  <div class="col">
+                    <strong>Nume</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="|${programare.stapanId.firstname} ${programare.stapanId.lastname}|"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Nr Telefon</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${programare.stapanId.nrtelefon}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Email</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${programare.stapanId.email}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total animale</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${programare.stapanId.animale.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total vizite</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${programare.stapanId.vizite.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Programări </strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${programare.stapanId.programari.size()}"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <div class="row" style="white-space: nowrap;">
+              <div class="col">
+                <div class="row justify-content-start">
+                  <a th:href="@{/veziAnimaleStapan/{id}(id=${programare.stapanId.stapanId})}" class="btn btn-info mr-1 mb-1 btn-block"> Vezi animale <i class="fas fa-search"></i>
+                  </a>
+                </div>
+                <div class="row justify-content-start">
+                  <a th:href="@{/viziteStapan/{id}(id=${programare.stapanId.stapanId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Vezi Vizite <i class="fas fa-scroll"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row justify-content-end">
+                  <a th:href="@{/programariStapan/{id}(id=${programare.stapanId.stapanId})}" class="btn btn-warning mr-1 mb-1 btn-block"> Programări Confirmate <i class="far fa-clock"></i>
+                  </a>
+                </div>
+                <div class="row  justify-content-end">
+				  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamenteStapan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Tratamente Animale <i class="fas fa-syringe"></i>
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamenteStapan">
+				    <a th:href="@{/tratamenteActiveStapan/{id}(id=${programare.stapanId.stapanId})}"  class="dropdown-item "> Active </a>
+				    <a th:href="@{/tratamenteVechiStapan/{id}(id=${programare.stapanId.stapanId})}"   class="dropdown-item "> Vechi  </a>
+				  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Închide</button>
+		  </div>
+        </div>
+      </div>
+    </div>   
+    
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ TRATAMENTE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ TRATAMENTE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ TRATAMENTE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Modal detalii stapan - pt pagina programari-->
+    <div class="modal fade" th:fragment="modal-detalii-stapan-tratament" th:id="*{'modalDetaliiStapanTratament'+{tratament.animalId.stapanId}}" tabindex="-1" role="dialog" aria-labelledby="#modalDetaliiStapanTratament" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="titlu" th:text="'Stăpânul ' + ${tratament.animalId.stapanId.firstname} + ' ' + ${tratament.animalId.stapanId.lastname}"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <div class="row">
+              <!-- ROW 1 COL 1-->
+              <!-- ROW 1 COL 1-->
+              <div class="col my-auto text-center">
+                <img th:id="*{'input-imagine-profil'+{tratament.animalId.stapanId.stapanId}}"
+                		th:src="@{/resources/poze_stapani/{img}(img=${tratament.animalId.stapanId.imagine != null ? tratament.animalId.stapanId.imagine : 'stapan_default.png'} ) }"
+                 		class="img-responsive" src="../static/images/photo.png"
+                 		style="height: 25vh; max-width: 25vh; border-radius: 50%; border: 0.2vw solid #00FFFF;">
+              </div>
+              <!-- ROW 1 COL 2-->
+              <!-- ROW 1 COL 2-->
+              <div class="col my-auto">
+                <div class="row">
+                  <div class="col">
+                    <strong>Nume</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="|${tratament.animalId.stapanId.firstname} ${tratament.animalId.stapanId.lastname}|"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Nr Telefon</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${tratament.animalId.stapanId.nrtelefon}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Email</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${tratament.animalId.stapanId.email}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total animale</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${tratament.animalId.stapanId.animale.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total vizite</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${tratament.animalId.stapanId.vizite.size()}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Programări </strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${tratament.animalId.stapanId.programari.size()}"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <div class="row" style="white-space: nowrap;">
+              <div class="col">
+                <div class="row justify-content-start">
+                  <a th:href="@{/veziAnimaleStapan/{id}(id=${tratament.animalId.stapanId.stapanId})}" class="btn btn-info mr-1 mb-1 btn-block"> Vezi animale <i class="fas fa-search"></i>
+                  </a>
+                </div>
+                <div class="row justify-content-start">
+                  <a th:href="@{/viziteStapan/{id}(id=${tratament.animalId.stapanId.stapanId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Vezi Vizite <i class="fas fa-scroll"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row justify-content-end">
+                  <a th:href="@{/programariStapan/{id}(id=${tratament.animalId.stapanId.stapanId})}" class="btn btn-warning mr-1 mb-1 btn-block"> Programări Confirmate <i class="far fa-clock"></i>
+                  </a>
+                </div>
+                <div class="row  justify-content-end">
+				  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamenteStapan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Tratamente Animale <i class="fas fa-syringe"></i>
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamenteStapan">
+				    <a th:href="@{/tratamenteActiveStapan/{id}(id=${tratament.animalId.stapanId.stapanId})}"  class="dropdown-item "> Active </a>
+				    <a th:href="@{/tratamenteVechiStapan/{id}(id=${tratament.animalId.stapanId.stapanId})}"   class="dropdown-item "> Vechi  </a>
+				  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Închide</button>
+		  </div>
+        </div>
+      </div>
+    </div>    
+    
+  </body>
+</html>

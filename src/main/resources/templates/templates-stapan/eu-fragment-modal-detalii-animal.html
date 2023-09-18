@@ -1,0 +1,603 @@
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANIMAL ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANIMAL ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANIMAL ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+      </head>
+      <body>
+        <!-- EXPLICATII BOTSTRAP - mr-1 si mb-1 		= pt spatiere -->
+        <!-- EXPLICATII BOTSTRAP - btn-block 		= pt marime butoane, sa ocupe tot spatiul parintelui  -->
+        <!-- EXPLICATII BOTSTRAP - my-auto           = pt asezare automata centrare vertical centru-->
+        <!-- Modal detalii animal-->
+        <div class="modal fade" th:fragment="modal-detalii-animal" th:id="*{'modalDetaliiAnimal'+{animal.animalId}}" role="dialog" aria-labelledby="#modalDetaliiAnimal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="titlu" th:text="'Detalii animal - ' + ${animal.nume}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&cross;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <div class="row">
+                  <!-- ROW 1 COL 1-->
+                  <!-- ROW 1 COL 1-->
+                  <div class="col my-auto text-center">
+                    <img th:id="*{'input-imagine-profil'+{animal.animalId}}" class="img-responsive" src="../static/images/photo.png" th:src="@{/resources/poze_animale/{img}(img=${animal.imagine != null ? animal.imagine : 'animal_default.png'} ) }" style="height: 25vh; 
+                    		max-width: 25vh; 
+                    		border-radius: 50%; 
+                    		border: 0.2vw solid #00FFFF;" />
+                  </div>
+                  <!-- ROW 1 COL 2-->
+                  <!-- ROW 1 COL 2-->
+                  <div class="col my-auto">
+                    <div class="row">
+                      <div class="col">
+                        <strong>Stapân</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="|${animal.stapanId.firstname}  ${animal.stapanId.lastname}|"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Nume</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.nume}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Specie</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.specie}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Rasă</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.rasa}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Total vizite</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.vizite.size()}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Programări </strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.programari.size()}"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <div class="row" style="white-space: nowrap;">
+                  <div class="col">
+                    <div class="row justify-content-start">
+                      <a th:href="@{/euViziteAnimal/{id}(id=${animal.animalId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Istoric Vizite <i class="fas fa-scroll"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-warning mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonProgramari" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Programări <i class="far fa-clock"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonProgramari">
+						    <a th:href="@{/euProgramariAnimal/{id}(id=${animal.animalId})}" 			  class="dropdown-item "> Confirmate   </a>
+						    <a th:href="@{/euProgramariAnimalNeconfirmate/{id}(id=${animal.animalId})}" class="dropdown-item "> Neconfirmate </a>
+						  </div>
+                    </div>
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamente" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Tratamente <i class="fas fa-syringe"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamente">
+						    <a th:href="@{/euTratamenteActiveAnimal/{id}(id=${animal.animalId})}"   class="dropdown-item "    > Active </a>
+						    <a th:href="@{/euTratamenteVechiAnimal/{id}(id=${animal.animalId})}" 	class="dropdown-item "> Vechi  </a>
+						  </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-block text-center" data-dismiss="modal">Închide</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ VIZITA ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ VIZITA ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ VIZITA ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Modal detalii animal - VIZITA-->
+        <div class="modal fade" th:fragment="modal-detalii-animal-vizita" th:id="*{'modalDetaliiAnimalVizita'+{vizita.animalId.animalId}}" role="dialog" aria-labelledby="#modalDetaliiAnimalVizita" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="titlu" th:text="'Detalii animal - ' + ${vizita.animalId.nume}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&cross;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <div class="row">
+                  <!-- ROW 1 COL 1-->
+                  <!-- ROW 1 COL 1-->
+                  <div class="col my-auto text-center">
+                    <img th:id="*{'input-imagine-profil'+{vizita.animalId.animalId}}" class="img-responsive" src="../static/images/photo.png" th:src="@{/resources/poze_animale/{img}(img=${vizita.animalId.imagine != null ? vizita.animalId.imagine : 'animal_default.png'} ) }" style="height: 25vh; 
+                    		max-width: 25vh; 
+                    		border-radius: 50%; 
+                    		border: 0.2vw solid #00FFFF;" />
+                  </div>
+                  <!-- ROW 1 COL 2-->
+                  <!-- ROW 1 COL 2-->
+                  <div class="col my-auto">
+                    <div class="row">
+                      <div class="col">
+                        <strong>Stapân</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="|${vizita.animalId.stapanId.firstname}  ${vizita.animalId.stapanId.lastname}|"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Nume</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${vizita.animalId.nume}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Specie</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${vizita.animalId.specie}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Rasă</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${vizita.animalId.rasa}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Total vizite</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${vizita.animalId.vizite.size()}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Programări </strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${vizita.animalId.programari.size()}"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <div class="row" style="white-space: nowrap;">
+                  <div class="col">
+                    <div class="row justify-content-start">
+                      <a th:href="@{/euViziteAnimal/{id}(id=${vizita.animalId.animalId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Istoric Vizite <i class="fas fa-scroll"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col">
+                     <div class="row  justify-content-end">
+						  <button class="btn btn-warning mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonProgramari" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Programări <i class="far fa-clock"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonProgramari">
+						    <a th:href="@{/euProgramariAnimal/{id}(id=${vizita.animalId.animalId})}" 			   class="dropdown-item "> Confirmate</a>
+						    <a th:href="@{/euProgramariAnimalNeconfirmate/{id}(id=${vizita.animalId.animalId})}" class="dropdown-item "> Neconfirmate </a>
+						  </div>
+                    </div>
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamente" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Tratamente <i class="fas fa-syringe"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamente">
+						    <a th:href="@{/euTratamenteActiveAnimal/{id}(id=${vizita.animalId.animalId})}"   		class="dropdown-item "> Active </a>
+						    <a th:href="@{/euTratamenteVechiAnimal/{id}(id=${vizita.animalId.animalId})}" 	class="dropdown-item "> Vechi  </a>
+						  </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-block text-center" data-dismiss="modal">Închide</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ PROGRAMARE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ PROGRAMARE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ PROGRAMARE ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Modal detalii animal - PROGRAMARE-->
+        <div class="modal fade" th:fragment="modal-detalii-animal-programare" th:id="*{'modalDetaliiAnimalProgramare'+{programare.animalId.animalId}}" role="dialog" aria-labelledby="#modalDetaliiAnimalProgramare" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="titlu" th:text="'Detalii animal - ' + ${programare.animalId.nume}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&cross;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <div class="row">
+                  <!-- ROW 1 COL 1-->
+                  <!-- ROW 1 COL 1-->
+                  <div class="col my-auto text-center">
+                    <img th:id="*{'input-imagine-profil'+{programare.animalId.animalId}}" class="img-responsive" src="../static/images/photo.png" th:src="@{/resources/poze_animale/{img}(img=${programare.animalId.imagine != null ? programare.animalId.imagine : 'animal_default.png'} ) }" style="height: 25vh; 
+                    		max-width: 25vh; 
+                    		border-radius: 50%; 
+                    		border: 0.2vw solid #00FFFF;" />
+                  </div>
+                  <!-- ROW 1 COL 2-->
+                  <!-- ROW 1 COL 2-->
+                  <div class="col my-auto">
+                    <div class="row">
+                      <div class="col">
+                        <strong>Stapân</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="|${programare.animalId.stapanId.firstname}  ${programare.animalId.stapanId.lastname}|"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Nume</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${programare.animalId.nume}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Specie</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${programare.animalId.specie}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Rasă</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${programare.animalId.rasa}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Total vizite</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${programare.animalId.vizite.size()}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Programări </strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${programare.animalId.programari.size()}"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <div class="row" style="white-space: nowrap;">
+                  <div class="col">
+                    <div class="row justify-content-start">
+                      <a th:href="@{/euViziteAnimal/{id}(id=${programare.animalId.animalId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Istoric Vizite <i class="fas fa-scroll"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-warning mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonProgramari" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Programări <i class="far fa-clock"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonProgramari">
+						    <a th:href="@{/euProgramariAnimal/{id}(id=${programare.animalId.animalId})}" 			   class="dropdown-item "> Confirmate   </a>
+						    <a th:href="@{/euProgramariAnimalNeconfirmate/{id}(id=${programare.animalId.animalId})}" class="dropdown-item "> Neconfirmate </a>
+						  </div>
+                    </div>
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamente" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Tratamente <i class="fas fa-syringe"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamente">
+						    <a th:href="@{/euTratamenteActiveAnimal/{id}(id=${programare.animalId.animalId})}"   	 class="dropdown-item "> Active </a>
+						    <a th:href="@{/euTratamenteVechiAnimal/{id}(id=${programare.animalId.animalId})}"  class="dropdown-item "> Vechi  </a>
+						  </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-block text-center" data-dismiss="modal">Închide</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ STAPAN ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ STAPAN ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ STAPAN ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Modal detalii animal - STAPAN-->
+        <div class="modal fade" th:fragment="modal-detalii-animal-stapan" th:id="*{'modalDetaliiAnimalStapan'+{animal.animalId}}" role="dialog" aria-labelledby="#modalDetaliiAnimalStapan" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="titlu" th:text="'Detalii animal - ' + ${animal.nume}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&cross;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <div class="row">
+                  <!-- ROW 1 COL 1-->
+                  <!-- ROW 1 COL 1-->
+                  <div class="col my-auto text-center">
+                    <img 
+                    	th:id="*{'input-imagine-profil'+{animal.animalId}}" class="img-responsive" src="../static/images/photo.png" 
+                    	th:src="@{/resources/poze_animale/{img}(img=${animal.imagine != null ? animal.imagine : 'animal_default.png'} ) }" 
+                    	style="height: 25vh; 
+                    		max-width: 25vh; 
+                    		border-radius: 50%; 
+                    		border: 0.2vw solid #00FFFF;" />
+                  </div>
+                  <!-- ROW 1 COL 2-->
+                  <!-- ROW 1 COL 2-->
+                  <div class="col my-auto">
+                    <div class="row">
+                      <div class="col">
+                        <strong>Stapân</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="|${animal.stapanId.firstname}  ${animal.stapanId.lastname}|"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Nume</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.nume}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Specie</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.specie}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Rasă</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.rasa}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Total vizite</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.vizite.size()}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Programări </strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${animal.programari.size()}"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <div class="row" style="white-space: nowrap;">
+                  <div class="col">
+                    <div class="row justify-content-start">
+                      <a th:href="@{/euViziteAnimal/{id}(id=${animal.animalId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Istoric Vizite <i class="fas fa-scroll"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-warning mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonProgramari" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Programări <i class="far fa-clock"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonProgramari">
+						    <a th:href="@{/euProgramariAnimal/{id}(id=${animal.animalId})}" 			  class="dropdown-item "> Confirmate   </a>
+						    <a th:href="@{/euProgramariAnimalNeconfirmate/{id}(id=${animal.animalId})}" class="dropdown-item "> Neconfirmate </a>
+						  </div>
+                    </div>
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamente" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Tratamente <i class="fas fa-syringe"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamente">
+						    <a th:href="@{/euTratamenteActiveAnimal/{id}(id=${animal.animalId})}"   class="dropdown-item "    > Active </a>
+						    <a th:href="@{/euTratamenteVechiAnimal/{id}(id=${animal.animalId})}" 	class="dropdown-item "> Vechi  </a>
+						  </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-block text-center" data-dismiss="modal">Închide</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ TRATAMENT ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ TRATAMENT ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ TRATAMENT ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Modal detalii animal - TRATAMENT-->
+        <div class="modal fade" th:fragment="modal-detalii-animal-tratament" th:id="*{'modalDetaliiAnimalTratament'+{tratament.animalId.animalId}}" role="dialog" aria-labelledby="#modalDetaliiAnimalTratament" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="titlu" th:text="'Detalii animal - ' + ${tratament.animalId.nume}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&cross;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <!-- ROW 1 -->
+                <div class="row">
+                  <!-- ROW 1 COL 1-->
+                  <!-- ROW 1 COL 1-->
+                  <div class="col my-auto text-center">
+                    <img th:id="*{'input-imagine-profil'+{tratament.animalId.animalId}}" class="img-responsive" src="../static/images/photo.png" th:src="@{/resources/poze_animale/{img}(img=${tratament.animalId.imagine != null ? tratament.animalId.imagine : 'animal_default.png'} ) }" style="height: 25vh; 
+                    		max-width: 25vh; 
+                    		border-radius: 50%; 
+                    		border: 0.2vw solid #00FFFF;" />
+                  </div>
+                  <!-- ROW 1 COL 2-->
+                  <!-- ROW 1 COL 2-->
+                  <div class="col my-auto">
+                    <div class="row">
+                      <div class="col">
+                        <strong>Stapân</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="|${tratament.animalId.stapanId.firstname}  ${tratament.animalId.stapanId.lastname}|"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Nume</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${tratament.animalId.nume}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Specie</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${tratament.animalId.specie}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Rasă</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${tratament.animalId.rasa}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Total vizite</strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${tratament.animalId.vizite.size()}"></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Programări </strong>
+                      </div>
+                      <div class="col my-auto">
+                        <label th:text="${tratament.animalId.programari.size()}"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <!-- ROW 2 -->
+                <div class="row" style="white-space: nowrap;">
+                  <div class="col">
+                    <div class="row justify-content-start">
+                      <a th:href="@{/euViziteAnimal/{id}(id=${tratament.animalId.animalId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Istoric Vizite <i class="fas fa-scroll"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-warning mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonProgramari" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Programări <i class="far fa-clock"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonProgramari">
+						    <a th:href="@{/euProgramariAnimal/{id}(id=${tratament.animalId.animalId})}" 			  class="dropdown-item "> Confirmate   </a>
+						    <a th:href="@{/euProgramariAnimalNeconfirmate/{id}(id=${tratament.animalId.animalId})}" class="dropdown-item "> Neconfirmate </a>
+						  </div>
+                    </div>
+                    
+                    <div class="row  justify-content-end">
+						  <button class="btn btn-danger mr-1 mb-1 btn-block dropdown-toggle" type="button" id="dropdownMenuButtonTratamente" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Tratamente <i class="fas fa-syringe"></i>
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonTratamente">
+						    <a th:href="@{/euTratamenteActiveAnimal/{id}(id=${tratament.animalId.animalId})}"   class="dropdown-item "    > Active </a>
+						    <a th:href="@{/euTratamenteVechiAnimal/{id}(id=${tratament.animalId.animalId})}" 	class="dropdown-item "> Vechi  </a>
+						  </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-block text-center" data-dismiss="modal">Închide</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </body>
+    </html>

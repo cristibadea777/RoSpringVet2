@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <!-- HEAD -->
+  <!-- HEAD -->
+  <!-- HEAD -->
+  <head>
+    <meta charset="utf-8">
+    <title>RoSpringVet</title>
+     <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- CSS nostru -->
+    <link rel="stylesheet" href="/css/template1.css">
+    <!-- Pentru glyphicon-uri -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- JS ca sa mearga modal-ul cu bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <!-- Ca sa mearga DateTimePicker-ul -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+    <!-- Date-pickerul jQuery pentru a alege data fara timp cand facem cautarea-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <!-- Nu includ: <script src="https://code.jquery.com/jquery-1.12.4.js"></script> Face conflict cu alta versiune, cea de la bootstrap si nu arata modalu-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <!-- END HEAD -->
+  <!-- END HEAD -->
+  <!-- END HEAD -->
+  <!-- BODY -->
+  <!-- BODY -->
+  <!-- BODY -->
+  <body>
+    <!-- th replace pt navbar angajati -->
+    <div th:replace="fragments/topnavbar :: navbar3"></div>
+    <!-- END th replace pt navbar angajati -->
+    <!-- DIV CONTAINER PRINCIPAL -->
+    <!-- DIV CONTAINER PRINCIPAL -->
+    <!-- DIV CONTAINER PRINCIPAL -->
+    <div class="div-container-principal">
+      <h1 class="titlu">Lista cu toți stăpânii</h1>
+      <!-- DIV ADAUGA SI CAUTARE -->
+      <!-- DIV ADAUGA SI CAUTARE -->
+      <!-- DIV ADAUGA SI CAUTARE -->
+      <div class="div-adauga-si-cautare">
+        <button type="button" class="btn btn-primary btn-lg mb-3" data-toggle="modal" th:attr="data-target='#modalAdaugaStapan'">Adaugă stăpân <i class="fas fa-plus"></i>
+        </button>
+        <div style="display: flex; float:right;">
+          <label id="labelSearch" style="height: 5vh; line-height: 5vh; padding: 0;">Caută după: </label> &nbsp; <select id="fieldSearch" class="form-select" aria-label="Default select example">
+            <option value="lastname" selected>Nume</option>
+            <option value="firstname">Prenume</option>
+            <option value="nrtelefon">Nr Telefon</option>
+            <option value="email">Email</option>
+          </select> &nbsp; <input id="txtSearch"></input> &nbsp; <button id="buttonSearch" th:onclick="cautaDupaCampSiText()" class="btn btn-secondary">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <!-- END DIV ADAUGA SI CAUTARE -->
+      <!-- END DIV ADAUGA SI CAUTARE -->
+      <!-- END DIV ADAUGA SI CAUTARE -->
+      <!-- TABLE -->
+      <!-- TABLE -->
+      <!-- TABLE -->
+      <table id="tabel" border="1" class="table table-striped table-responsive-md table-hover">
+        <!-- TABLE HEAD-->
+        <!-- TABLE HEAD-->
+        <thead>
+          <tr>
+          	<th class="text-center"> Poză </th>
+            <th class="text-center"><a th:href="@{'/veziStapani/page/' + ${currentPage} + '?sortField=firstname&sortDir=' + ${reverseSortDir} + '&txtSearch=' + ${txtSearch} + '&fieldSearch=' + ${fieldSearch}}">Prenume</a></th>
+            <th class="text-center"><a th:href="@{'/veziStapani/page/' + ${currentPage} + '?sortField=lastname&sortDir=' + ${reverseSortDir} + '&txtSearch=' + ${txtSearch} + '&fieldSearch=' + ${fieldSearch}}">Nume</a></th>
+            <th class="text-center"><a th:href="@{'/veziStapani/page/' + ${currentPage} + '?sortField=nrtelefon&sortDir=' + ${reverseSortDir} + '&txtSearch=' + ${txtSearch} + '&fieldSearch=' + ${fieldSearch}}">Nr Telefon</a></th>
+            <th class="text-center"><a th:href="@{'/veziStapani/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir} + '&txtSearch=' + ${txtSearch} + '&fieldSearch=' + ${fieldSearch}}">Email</a></th>
+            <th class="text-center"> Acțiuni </th>
+          </tr>
+        </thead>
+        <!-- END TABLE HEAD-->
+        <!-- END TABLE HEAD-->
+        <!-- TABLE BODY-->
+        <!-- TABLE BODY-->
+        <tbody>
+          <!-- TABLE ROW -->
+          <!-- LINIILE SI FIECARE COLOANA A LINIILOR TABELULUI SE VOR GENERA AUTOMAT PT FIECARE STAPAN -->
+          <tr th:each="stapan : ${listaStapani}">
+          	<td>	
+          		<img 
+          			th:src="@{/resources/poze_stapani/{img}(img=${stapan.imagine != null ? stapan.imagine : 'stapan_default.png'} ) }"
+          			class="img-responsive" 
+					width="1000"
+					style="
+							height:8.5vh; 
+							max-width:8.5vh;  
+						   	border-radius: 50%; 
+						   	border: 0.2vw solid #00FFFF;"
+				/>
+			</td> 
+            <td th:text="${stapan.firstname}"></td>
+            <td th:text="${stapan.lastname}"></td>
+            <td th:text="${stapan.nrtelefon}"></td>
+            <td th:text="${stapan.email}"></td>
+            <!-- stilul white-space: nowrap; ca sa nu se inghesuie butoanele pe randu urmator -->
+            <td style="white-space: nowrap;">
+              <!-- Buton detalii stapan -->
+              <button type="button" class="btn btn-info" data-toggle="modal" th:attr="data-target='#modalDetaliiStapanStapani'+*{stapan.stapanId}">Detalii <i class="fas fa-search"></i>
+              </button>
+              <!-- Buton update modal -->
+              <button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#modalUpdateStapan'+*{stapan.stapanId}">Editează <i class="fas fa-edit"></i>
+              </button>
+              <!-- Buton adauga animal modal. Butonul va face vizibil modalul de adaugare a unui animal. -->
+              <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#modalAdaugaAnimal'+*{stapan.stapanId}">Animal nou <i class="fas fa-plus"></i>
+              </button>
+              <!-- Buton delete modal -->
+              <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#modalStergeStapan'+*{stapan.stapanId}">Șterge <i class="fas fa-minus"></i>
+              </button>
+            </td>
+            <!-- AICI FRAGMENTELE DIN TABEL-->
+            <!-- AICI FRAGMENTELE -->
+            <!-- MODALE SI JAVASCRIPT PT MODALE -->
+            <!-- MODALE SI JAVASCRIPT PT MODALE -->
+            <!-- MODALE SI JAVASCRIPT PT MODALE -->
+            <div th:replace="fragments/modal-detalii-stapan :: modal-detalii-stapan-stapani"></div>
+            <div th:replace="fragments/modal-update-stapan :: modal-update-stapan"></div>
+            <div th:replace="fragments/modal-adauga-animal :: modal-adauga-animal"></div>
+            <div th:replace="fragments/modal-stergere-stapan :: modal-stergere-stapan"></div>
+            <!-- END MODALE SI JAVASCRIPT PT MODALE -->
+            <!-- END MODALE SI JAVASCRIPT PT MODALE -->
+            <!-- END MODALE SI JAVASCRIPT PT MODALE -->
+          </tr>
+          <!-- END TABLE ROW -->
+        </tbody>
+        <!-- END TABLE BODY-->
+        <!-- END TABLE BODY-->
+      </table>
+      <!-- END TABLE -->
+      <!-- END TABLE -->
+      <!-- END TABLE -->
+      <!-- DIV PAGINI -->
+      <div th:replace="fragments/div-pagini :: div-pagini"></div>
+    </div>
+    <!-- END DIV CONTAINER PRINCIPAL -->
+    <!-- END DIV CONTAINER PRINCIPAL -->
+    <!-- END DIV CONTAINER PRINCIPAL -->
+    <!-- AICI FRAGMENTELE DIN AFARA TABELULUI-->
+    <!-- FRAGMENTE DIN AFARA TABELULUI -->
+    <!-- FRAGMENTE DIN AFARA TABELULUI -->
+    <!-- FRAGMENTE DIN AFARA TABELULUI -->
+    <div th:replace="fragments/modal-adauga-stapan :: modal-adauga-stapan"></div>
+    <div th:replace="fragments/modal-cautare-fararezultat :: modal-cautare-fararezultat"></div>
+    <div th:replace="fragments/modal-url-inexistent :: modal-url-inexistent"></div>
+    <!-- END FRAGMENTE DIN AFARA TABELULUI -->
+    <!-- END FRAGMENTE DIN AFARA TABELULUI -->
+    <!-- END FRAGMENTE DIN AFARA TABELULUI -->
+    
+	
+	<!-- SCRIPTURI JS -->
+	<!-- Script JavaScript pentru atentionare lipsa tratamente/programari -->
+	<!-- Si redeschidere modal animal -->
+	<script th:inline="javascript" th:if="${fararezultatStapan}">
+			//alerta
+			var stapan = /*[[${nume_stapan}]]*/	
+			alert("ZERO rezultate pentru " + stapan);
+			
+			//redeschidere modal
+			var id = /*[[${idModal}]]*/ 0;  
+			$("#modalDetaliiStapanStapani" + id).modal("show"); 
+	</script>
+    
+      
+    <!-- SCRIPTURI -->
+    <!-- SCRIPTURI -->
+    <!-- SCRIPTURI -->    
+    <script th:inline="javascript"	>
+    //functie cautare 
+	    function cautaDupaCampSiText(){ 
+	  	  // Selecting the input element and get its value 
+	  	  var txtSearch = document.getElementById("txtSearch").value; 
+	  	  var fieldSearch = document.getElementById("fieldSearch").value; 
+	  	  var currentPage = /*[[${currentPage}]]*/ 0; 
+	  	  var sortField = /*[[${sortField}]]*/ 0; 
+	  	  var sortDir = /*[[${sortDir}]]*/ 0; 
+	  	  // Displaying the value 
+	  	  console.log(txtSearch); 
+	  	  window.location.href='/veziStapani/page/' + 1 + '?sortField=' + sortField + '&sortDir=' + sortDir + '&txtSearch=' + txtSearch + '&fieldSearch=' + fieldSearch; 
+	  } 
+    </script>
+    
+    <!-- Script JavaScript pentru cautare, si schimbare pagini. -->
+     <script th:inline="javascript" th:if="${currentPage}">
+      //functii navigare catre pagina inainte, inapoi, prima, ultima nr paginii intre 
+      function paginaInainte(){ 
+    	  var txtSearch = /*[[${txtSearch}]]*/ 0; 
+    	  var fieldSearch = /*[[${fieldSearch}]]*/ 0; 
+    	  var currentPage = /*[[${currentPage+1}]]*/ 0; 
+    	  var sortField = /*[[${sortField}]]*/ 0; 
+    	  var sortDir = /*[[${sortDir}]]*/ 0; 
+    	  window.location.href='/veziStapani/page/' + currentPage + '?sortField=' + sortField + '&sortDir=' + sortDir + '&txtSearch=' + txtSearch + '&fieldSearch=' + fieldSearch; 
+      } 
+      function paginaInapoi(){ 
+    	  var txtSearch = /*[[${txtSearch}]]*/ 0; 
+    	  var fieldSearch = /*[[${fieldSearch}]]*/ 0; 
+    	  var currentPage = /*[[${currentPage-1}]]*/ 0; 
+    	  var sortField = /*[[${sortField}]]*/ 0; 
+    	  var sortDir = /*[[${sortDir}]]*/ 0; 
+    	  window.location.href='/veziStapani/page/' + currentPage + '?sortField=' + sortField + '&sortDir=' + sortDir + '&txtSearch=' + txtSearch + '&fieldSearch=' + fieldSearch; 
+      } 
+      function paginaPrima(){ 
+    	  var txtSearch = /*[[${txtSearch}]]*/ 0; 
+    	  var fieldSearch = /*[[${fieldSearch}]]*/ 0; 
+    	  var currentPage = 1; var sortField = /*[[${sortField}]]*/ 0; 
+    	  var sortDir = /*[[${sortDir}]]*/ 0; 
+    	  window.location.href='/veziStapani/page/' + currentPage + '?sortField=' + sortField + '&sortDir=' + sortDir + '&txtSearch=' + txtSearch + '&fieldSearch=' + fieldSearch; 
+      } 
+      function paginaUltima(){ 
+    	  var txtSearch = /*[[${txtSearch}]]*/ 0; 
+    	  var fieldSearch = /*[[${fieldSearch}]]*/ 0; 
+    	  var currentPage = /*[[${totalPages}]]*/ 0; 
+    	  var sortField = /*[[${sortField}]]*/ 0; 
+    	  var sortDir = /*[[${sortDir}]]*/ 0; 
+    	  window.location.href='/veziStapani/page/' + currentPage + '?sortField=' + sortField + '&sortDir=' + sortDir + '&txtSearch=' + txtSearch + '&fieldSearch=' + fieldSearch; 
+      } 
+    </script>
+    <!-- END SCRIPTURI -->
+    <!-- END SCRIPTURI -->
+    <!-- END SCRIPTURI -->
+
+  </body>
+  <!-- END BODY -->
+  <!-- END BODY -->
+  <!-- END BODY -->
+</html>

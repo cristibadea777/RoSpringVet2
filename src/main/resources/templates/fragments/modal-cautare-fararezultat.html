@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<!-- Modal cautare fara rezultat-->
+<div class="modal" th:fragment="modal-cautare-fararezultat" id="modalCautare" tabindex="-1" role="dialog" aria-labelledby="modalCautare" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- arata modal daca cautarea nu are rezultate-->
+      <script th:inline="javascript" th:if="${cautareText} != null">
+        $("#modalCautare").modal("show");
+      </script>
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100">Căutare fără rezultat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&cross;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 th:text="|Pentru câmpul ${cautareCamp} și textul ${cautareText} |"></h5>
+        <h5>Nu am găsit niciun rezultat.</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

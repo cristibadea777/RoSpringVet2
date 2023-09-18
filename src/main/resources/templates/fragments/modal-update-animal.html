@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<!-- Modal update-->
+<div class="modal" 
+	th:fragment="modal-update-animal" th:id="*{'modalUpdateAnimal'+{animal.animalId}}"
+	tabindex="-1" role="dialog" aria-labelledby="#modalUpdateAnimal"
+	aria-hidden="true">
+	
+	<!-- arata modal daca modalul trimis are erori sau success (URL-ul contine parametrul erredit)-->
+	
+	<script th:inline="javascript"
+		th:if="${erredit} != null OR ${succesEdit}">
+		var id = /*[[${idModal}]]*/ 0;  
+		$("#modalUpdateAnimal" + id).modal("show"); 
+		//AICI LUAM PRIMA VALOARE A PARAMETRULUI idModal PE CARE IL PUNEM IN CONTROLLER 
+		//SI DESCHIDEM MODALUL CU NUMARUL LUAT DIN PARAMETRU...					
+	</script>
+	
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h5 class="modal-title w-100" id="titlu"
+					th:text="'Editează animalul - ' + ${animal.nume}"></h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+				<span aria-hidden="true">&cross;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+			 	
+			 	<!-- editare reusita -->
+            	<div th:if="${successEdit} != null">
+              		<div class="alert alert-success">
+                		<h5>Editat cu succes !</h5>
+              		</div>
+            	</div>
+				
+				<div class="row">
+					<div class="col-md-5 col-xs-6">
+						
+						<!-- enctype trebuie sa fie multipart/form-data  pentru a salva imagini-->
+						
+						<form action="/editareAnimal" object=animal method="POST" enctype="multipart/form-data">
+							<div class="form-group">
+								<!--ID animal este hidden -->
+								<input type="text" th:value="*{animal.animalId}" class="form-control" name="animalId" hidden="true">
+							</div>
+							<div class="form-group">
+								<label>Nume</label> 
+								<input type="text" th:value="*{animal.nume}" class="form-control" name="nume">
+							</div>
+							<!-- eroare nume -->
+							<div th:if="${errnume} != null" class="alert alert-danger">
+								<span class="error">
+									<p class="text-danger">Nu poți lăsa un animal fără nume.</p>
+								</span>
+							</div>
+							<div class="form-group">
+								<label>Specie</label> 
+								<input type="text" th:value="*{animal.specie}" class="form-control" name="specie">
+							</div>
+							<!-- eroare specie -->
+							<div th:if="${errspecie} != null"
+								class="alert alert-danger">
+								<span class="error">
+									<p class="text-danger">Nu poți lăsa un animal fără specie</p>
+								</span>
+							</div>
+							<div class="form-group">
+								<label>Rasă</label> 
+								<input type="text" th:value="*{animal.rasa}" class="form-control" name="rasa">
+							</div>
+							<!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+							<!--Nr paginii -->
+							<input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+							<!--Numele campului dupa care se face sortarea -->
+							<input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+							<!--Directia sortarii-->
+							<input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+							<!--Numele vederii-->
+							<input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true">
+					</div>
+					<div class="col-md-5 col-xs-6">
+						<img 	th:id="*{'input-imagine-edit'+{animal.animalId}}"  
+								class="img-responsive"
+								src="../static/images/photo.png"
+								th:src="@{/resources/poze_animale/{img}(img=${animal.imagine != null ? animal.imagine : 'animal_default.png'} ) }" 
+								style="height: 30vh; 
+								max-width: 30vh; 
+								border-radius: 50%; 
+								border: 0.2vw solid #00FFFF;" />	
+						<br> 
+						<br> 
+						<!-- Adaugam style="display: none" input-ului. Nu il afisam pentru ca noi stilizam label-ul ce apartine de el, nu input-ul in sine. -->
+						<!-- Adaug utilizand Thymeleaf si ID-ul animalului ca parametru pentru functia JavaScript, pentru a vedea imaginea in modalul curent nu pentru primul din lista-->
+						<input th:id="*{'file-input-edit'+{animal.animalId}}" type="file" name="imageFile" accept="image/png, image/jpg" th:onchange="|citesteImagineEditURL(this,'*{animal.animalId}');|" style="display: none">
+						<label th:for="*{'file-input-edit'+{animal.animalId}}" class="btn btn-info">Selectează o poză <i class="fas fa-upload"></i></label>
+						<!-- Imaginea citita se va incarca direct pe ecran in tag-ul "input-imagine-edit". Folosim o functie JavaScript pentru asta. -->
+						<!-- Imaginea incarcata va fi trimisa catre controller sub forma unui obiect de tip MultipartFile. Pentru asta am adaugat si enctype="multipart/form-data" metoda de encriptare pentru form. -->
+						<!-- In controller imaginea se seteaza numele corespunzator imaginii, se salveaza in folder si se seteaza animalului. -->
+						<!-- mesaj eroare poza -->
+						<div th:if="${errpoza} != null">
+							<div class="alert alert-danger">
+								<p class="text-danger ">Nu am putut încărca poza. Fișiere permise: .jpg și png</p>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Închide</button>
+					<button type="submit" class="btn btn-primary">Salvează</button>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Script JavaScript pentru a pune imaginea selectata in div-ul "input-imagine-edit pentru modalul de editare". -->
+	<script th:inline="javascript">
+		function citesteImagineEditURL(input, idAnimal) {
+			if (input.files && input.files[0]) {
+				
+				var reader = new FileReader();
+
+				reader.onload = function(e) {
+					$('#input-imagine-edit' + idAnimal).attr('src', e.target.result);
+				};
+				
+				reader.readAsDataURL(input.files[0]);
+			}
+			}
+	</script>
+	
+	</div>
+</body>
+</html>

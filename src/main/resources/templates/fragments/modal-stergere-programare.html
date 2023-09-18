@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+	<div
+		th:fragment="modal-stergere-programare" 
+		class="modal"
+		th:id="*{'modalStergeProgramare'+{programare.programareId}}"
+		tabindex="-1" role="dialog" aria-labelledby="#modalStergeProgramare"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+			<form action="/anulareProgramare" method="POST" th:onsubmit="|schimbaButonSubmitAnulare(${programare.programareId});|">
+				<div class="modal-header">
+					<div class="child">
+						<h2 class="modal-title" id="titlu">Anulează programarea</h2>
+						<h2>&nbsp;</h2>
+						<h4
+							th:text="|Data: ${#dates.format(programare.date, 'dd MMMM yyyy hh:mm')}|"></h4>
+						<h4
+							th:text="|Stăpânul: ${programare.stapanId.firstname} ${programare.stapanId.lastname}|"></h4>
+						<h4 th:text="|Animalul: ${programare.animalId.nume}|"></h4>
+					</div>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&cross;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h3>Ești sigur că vrei să anulezi ?</h3>
+					<br>
+					<div class="form-group">
+						<input type="text" th:value="*{programare.programareId}" class="form-control" name="programareId" hidden="true">
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Închide</button>
+					<button 
+						th:id="'butonSubmitAnulareProg' + ${programare.programareId}" 
+						type="submit" class="btn btn-danger">Anulează <i class="fas fa-check"></i></button>
+				</div>
+				
+				<input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+				<input type="text"th:value="${sortField}" class="form-control" name="sortField" hidden="true"> 
+				<input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true"> 
+				<input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true"> 
+				<input type="text" th:value="${data}" class="form-control" name="data" hidden="true">
+        		<input type="text" th:value="${fieldSearch}" class="form-control" name="fieldSearch" hidden="true">
+        		<input type="text" th:value="${txtSearch}" class="form-control" name="txtSearch" hidden="true">
+				
+				</form>
+			</div>
+		</div>
+		
+		
+		<script th:inline="javascript">
+			//scripturi pt elemente
+			
+			//schimba buton in rotita de asteptare
+			function schimbaButonSubmitAnulare(idProgramare) {
+				btn = document.getElementById("butonSubmitAnulareProg" + idProgramare);
+				btn.innerHTML = '<i class = "fa fa-cog fa-spin"></i> Vă rugăm așteptați...';
+				btn.disabled=true;
+			}
+			
+		</script>
+			
+		
+	</div>
+</body>
+</html>

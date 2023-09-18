@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+
+<!-- Modal programare-->
+<div th:fragment="modal-adauga-programare" class="modal" th:id="*{'modalProgramareAnimal'+{animal.animalId}}" tabindex="-1" role="dialog" aria-labelledby="#modalProgramareAnimal" aria-hidden="true">
+  <!-- arata modal daca modalul trimis are erori (URL-ul contine parametrul err)-->
+  <script th:inline="javascript" th:if="${errAddProgramare} != null">
+    var id = /*[[${idModal}]]*/ 0;
+    $("#modalProgramareAnimal" + id).modal("show"); //AICI LUAM PRIMA VALOARE A PARAMETRULUI idModal PE CARE IL PUNEM IN CONTROLLER //SI DESCHIDEM MODALUL CU NUMARUL LUAT DIN PARAMETRU... 
+  </script>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="titlu" th:text="'Programează animalul - ' + ${animal.nume}"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&cross;</span>
+        </button>
+      </div>
+      <form action="/adaugaProgramare" object=programare method="POST" th:onsubmit="|schimbaButonAdaugareProgramare(${animal.animalId});|" />
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-5 col-xs-7">
+            <h5 class="modal-title" th:text="'Stăpânul: ' + ${animal.stapanId.firstname} + ' ' + ${animal.stapanId.lastname}"></h5>
+            <h5 class="modal-title" th:text="'Animalul: ' + ${animal.nume}"></h5>
+          </div>
+          <div class="col-md-1 col-xs-7"></div>
+          <div class="col-md-5 col-xs-7">
+			<img 	class="img-responsive"  
+			     	th:src="@{/resources/poze_animale/{img}(img=${animal.imagine != null ? animal.imagine : 'animal_default.png'} ) }" 
+			     	style="height:20vh; 
+			     	max-width:20vh; 
+			     	border-radius: 50%; 
+			     	border: 0.2vh solid #00FFFF;" />		
+		 </div>
+          <div class="col-md-6 col-xs-7">
+            <h4>Data și ora</h4>
+            <div class="form-group">
+              <div class="input-group date" th:id="'datetimepickerDataProgramare' + ${animal.animalId}" data-target-input="nearest">
+                <input type="text" th:field="*{programare.date}" class="form-control datetimepicker-input" th:data-target="'#datetimepickerDataProgramare'+ ${animal.animalId}" />
+                <div class="input-group-append" th:data-target="'#datetimepickerDataProgramare'+ ${animal.animalId}" data-toggle="datetimepicker">
+                  <div class="input-group-text">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+              $(function() {
+                var id = /*[[${animal.animalId}]]*/ 0;
+                $('#datetimepickerDataProgramare' + id).datetimepicker();
+              });
+            </script>
+          </div>
+          <div class="col-md-5 col-xs-7">
+            <h4>Motiv</h4>
+            <input type="text" th:value="*{programare.motiv}" class="form-control" name="motiv">
+          </div>
+        </div>
+        <!-- eroare data si ora -->
+        <div style="text-align: center" th:if="${errDataProgramare} != null" class="alert alert-danger">
+          <span class="error">
+            <h4 class="text-danger">Selectează data și ora !</h4>
+          </span>
+        </div>
+        <!-- eroare motiv -->
+        <div style="text-align: center" th:if="${errMotivProgramare} != null" class="alert alert-danger">
+          <span class="error">
+            <h4 class="text-danger">Introdu un motiv !</h4>
+          </span>
+        </div>
+        <!-- eroare data selectata din trecut -->
+        <div style="text-align: center" th:if="${errDataProgramareTrecut} != null" class="alert alert-danger">
+          <span class="error">
+            <h4 class="text-danger">Alege o dată din viitor !</h4>
+          </span>
+        </div>
+        
+        <!-- camppuri de input ascunse Programare-->
+        <!-- nume stapan -->
+        <input th:value="${animal.stapanId.firstname} + ' ' + ${animal.stapanId.lastname}" name="numestapan" type="hidden" />
+        <!-- id stapan -->
+        <input th:value="${animal.stapanId.stapanId}" name="stapanId" type="hidden" />
+        <!-- nume animal -->
+        <input th:value="${animal.nume}" name="numeanimal" type="hidden" />
+        <!-- id animal -->
+        <input th:value="${animal.animalId}" name="animalId" type="hidden" />
+        <!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+        <!--Nr paginii -->
+        <input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+        <!--Numele campului dupa care se face sortarea -->
+        <input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+        <!--Directia sortarii-->
+        <input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+        <!-- Field cautare -->
+        <input type="text" th:value="${fieldSearch}" class="form-control" name="fieldSearch" hidden="true">
+        <!-- Text cautare -->
+        <input type="text" th:value="${txtSearch}" class="form-control" name="txtSearch" hidden="true">
+        <!--Numele vederii-->
+        <input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+          <button th:id="'butonSubmitAdaugareProg' + ${animal.animalId}" type="submit" class="btn btn-primary">Salvează</button>
+        </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- SCRIPT SCHIMBARE TEXT BUTON CAT SE INCARCA... -->
+    <script th:inline="javascript">
+		function schimbaButonAdaugareProgramare(idAnimal) {
+			btn = document.getElementById("butonSubmitAdaugareProg" + idAnimal);
+			btn.innerHTML = '<i class = "fa fa-cog fa-spin"></i> Vă rugăm așteptați...';
+			btn.disabled=true;
+		}
+    </script>
+    
+  </div>
+
+</body>
+</html>

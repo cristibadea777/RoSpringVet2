@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <!-- Modal update-->
+    <div class="modal" th:fragment="modal-update-stapan" th:id="*{'modalUpdateStapan'+{stapan.stapanId}}" tabindex="-1" role="dialog" aria-labelledby="#modalUpdateStapan" aria-hidden="true">
+      <!-- arata modal daca modalul trimis are erori sau e editat cu success (contine parametrul erredit sau success)-->
+      <script th:inline="javascript" th:if="${erredit} != null OR ${successEdit} != null">
+        var id = /*[[${idModal}]]*/ 0;
+        $("#modalUpdateStapan" + id).modal("show"); 
+      </script>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="titlu" th:text="'Editează stăpânul - ' + ${stapan.firstname} + ' ' + ${stapan.lastname}"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- editare reusita -->
+            <div th:if="${successEdit} != null">
+              <div class="alert alert-success">
+                <h5>Editat cu succes !</h5>
+              </div>
+            </div>
+            <form action="/editareStapan" method="post" object=stapan enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-md-5 col-xs-6">
+                  <div class="form-group">
+                    <!--ID este hidden -->
+                    <input type="text" th:value="*{stapan.stapanId}" class="form-control" name="stapanId" hidden="true">
+                  </div>
+                  <div class="form-group">
+                    <label>Prenume</label>
+                    <input type="text" th:value="*{stapan.firstname}" class="form-control" name="firstname">
+                  </div>
+                  <!-- eroare prenume prea scurt -->
+                  <div th:if="${prenume} != null" class="alert alert-danger">
+                    <span class="error"></span>
+                    <p class="text-danger"> Prenume prea scurt !</p>
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label>Nume</label>
+                    <input type="text" th:value="*{stapan.lastname}" class="form-control" name="lastname">
+                  </div>
+                  <!-- eroare nume prea scurt -->
+                  <div th:if="${nume} != null" class="alert alert-danger">
+                    <span class="error"></span>
+                    <p class="text-danger"> Nume prea scurt !</p>
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label>Nr telefon</label>
+                    <input type="text" th:value="*{stapan.nrtelefon}" class="form-control" name="nrtelefon">
+                  </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" th:value="*{stapan.email}" class="form-control" name="email">
+                  </div>
+                  <!-- eroare mail format gresit -->
+                  <div th:if="${email} != null" class="alert alert-danger">
+                    <span class="error"></span>
+                    <p class="text-danger"> Format email nevalid !</p>
+                    </span>
+                  </div>
+                  <!-- eroare mail deja existent -->
+                  <div th:if="${emailExistent} != null" class="alert alert-danger">
+                    <span class="error"></span>
+                    <p class="text-danger"> Email deja existent !</p>
+                    </span>
+                  </div>
+                  <!-- eroare mail prea lung -->
+                  <div th:if="${emailLung} != null" class="alert alert-danger">
+                    <span class="error"></span>
+                    <p class="text-danger"> Introduceti un email mai scurt de 32 de caractere !</p>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-5 col-xs-6">
+                  <div class="col-md-5 col-xs-6">
+                    <img th:id="*{'input-imagine-edit'+{stapan.stapanId}}" class="img-responsive" src="../static/images/photo.png" th:src="@{/resources/poze_stapani/{img}(img=${stapan.imagine != null ? stapan.imagine : 'stapan_default.png'} ) }" style="height: 30vh; 
+								max-width: 30vh; 
+								border-radius: 50%; 
+								border: 0.2vw solid #00FFFF;" />
+                    <br>
+                    <br>
+                    <!-- Adaugam style="display: none" input-ului. Nu il afisam pentru ca noi stilizam label-ul ce apartine de el, nu input-ul in sine. -->
+                    <!-- Adaug utilizand Thymeleaf si ID-ul animalului ca parametru pentru functia JavaScript, pentru a vedea imaginea in modalul curent nu pentru primul din lista-->
+                    <input th:id="*{'file-input-edit'+{stapan.stapanId}}" type="file" name="imageFileStapan" accept="image/png, image/jpg" th:onchange="|citesteImagineEditURL(this,'*{stapan.stapanId}');|" style="display: none">
+                    <label th:for="*{'file-input-edit'+{stapan.stapanId}}" class="btn btn-info">Selectează o poză <i class="fas fa-upload"></i>
+                    </label>
+                    <!-- Imaginea citita se va incarca direct pe ecran in tag-ul "input-imagine-edit". Folosim o functie JavaScript pentru asta. -->
+                    <!-- Imaginea incarcata va fi trimisa catre controller sub forma unui obiect de tip MultipartFile. Pentru asta am adaugat si enctype="multipart/form-data" metoda de encriptare pentru form. -->
+                    <!-- In controller imaginea se seteaza numele corespunzator imaginii, se salveaza in folder si se seteaza stapanului. -->
+                    <!-- mesaj eroare poza -->
+                    <div th:if="${errpoza} != null">
+                      <div class="alert alert-danger">
+                        <p class="text-danger ">Nu am putut încărca poza. Fișiere permise: .jpg și png</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+            <button type="submit" class="btn btn-primary">Salvează</button>
+          </div>
+          <!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+          <!--Nr paginii -->
+          <input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+          <!--Numele campului dupa care se face sortarea -->
+          <input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+          <!--Directia sortarii-->
+          <input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+          <!-- Field cautare -->
+          <input type="text" th:value="${fieldSearch}" class="form-control" name="fieldSearch" hidden="true">
+          <!-- Text cautare -->
+          <input type="text" th:value="${txtSearch}" class="form-control" name="txtSearch" hidden="true">
+          </form>
+        </div>
+      </div>
+      <!-- Script JavaScript pentru a pune imaginea selectata in div-ul "input-imagine-edit pentru modalul de editare". -->
+      <script th:inline="javascript">
+        function citesteImagineEditURL(input, idStapan) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              $('#input-imagine-edit' + idStapan).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+      </script>
+    </div>
+  </body>
+</html>

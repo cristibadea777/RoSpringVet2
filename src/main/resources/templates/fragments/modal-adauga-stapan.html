@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <!-- Modal adauga stapan-->
+    <div class="modal" th:fragment="modal-adauga-stapan" th:id="*{'modalAdaugaStapan'}" tabindex="-1" role="dialog" aria-labelledby="#modalAdaugaStapan" aria-hidden="true">
+      <!-- arata modal daca modalul trimis are erori sau a fost cu success (contine parametrul erradd sau success)-->
+      <script th:inline="javascript" th:if="${erradd} != null OR ${success} != null">
+        $("#modalAdaugaStapan").modal("show"); //deschide iar modalul adauga stapan daca obiectul stapan trimis spre a fi salvat are erori 
+      </script>
+      <!-- Pentru a nu lasa utilizatorul sa dea click de doua ori pe butonul de submit (butonSubmitAdauga) si pentru a-l informa ca formularul se proceseaza si trebuie sa astepte, -->
+      <!-- atunci cand se apasa butonul de submit acesta se va dezactiva, pana ce vine raspunsul de la controller. -->
+      <script>
+        function schimbaButonSubmit() {
+          btn = document.getElementById("butonSubmitAdauga");
+          btn.innerHTML = '  <i class = "fa fa-cog fa-spin" > </i> Vă rugăm așteptați...';
+          btn.disabled = true;
+        }
+      </script>
+      <!-- Script JavaScript pentru a pune imaginea selectata in div-ul "input-imagine" pentru modalul de adaugare -->
+      <script th:inline="javascript">
+        function citesteImagineStapanURL(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              $('#input-imagine-stapan').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+      </script>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <!-- form-->
+          <form th:action="@{/adaugareStapan}" method="post" th:object="${user}" onsubmit="schimbaButonSubmit()" enctype="multipart/form-data">
+            <!-- modal header -->
+            <div class="modal-header" style="word-break: break-all; white-space: wrap;">
+              <span>
+                <h4 style="word-break: break-all;">Înregistrează un stăpân nou</h4>
+              </span>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&cross;</span>
+              </button>
+            </div>
+            <!-- modal body -->
+            <div class="modal-body">
+              <!-- inregistrare reusita -->
+              <div th:if="${success} != null">
+                <div class="alert alert-success">
+                  <h5>Stăpân înregistrat cu succes !</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5 col-xs-6">
+                  <div class="form-group">
+                    <label class="control-label" for="firstname"> Prenume </label>
+                    <input id="firstname" class="form-control" th:field="*{firstname}" required autofocus="autofocus" />
+                    <br>
+                    <!-- eroare prenume gol -->
+                    <div th:if="${errprenume} != null" class="alert alert-danger">
+                      <p class="text-danger">Completează prenumele !</p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label" for="lastname"> Nume </label>
+                    <input id="lastname" class="form-control" th:field="*{lastname}" required autofocus="autofocus" />
+                    <br>
+                    <!-- eroare nume gol -->
+                    <div th:if="${errnume} != null" class="alert alert-danger">
+                      <p class="text-danger">Completează numele !</p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label" for="nrtelefon"> Număr telefon </label>
+                    <input id="nrtelefon" class="form-control" th:field="*{nrtelefon}" />
+                  </div>
+                </div>
+                <div class="col-md-5 col-xs-6">
+                  <div class="col-md-5 col-xs-6">
+                    <img id="input-imagine-stapan" class="img-responsive" src="../static/images/photo.png" th:src="@{/resources/poze_stapani/stapan_default.png}" style="height: 200px; max-width: 250px; 
+                    	border-radius: 50%; 
+                    	border: 3px solid #00FFFF;" />
+                    <br>
+                    <br>
+                    <!-- Adaugam style="display: none" input-ului. Nu il afisam pentru ca noi stilizam label-ul ce apartine de el, nu input-ul in sine. -->
+                    <input id="file-input-stapan" type="file" name="imageFileStapan" accept="image/png, image/jpg" onchange="citesteImagineStapanURL(this);" style="display: none">
+                    <label for="file-input-stapan" class="btn btn-info">Selectează o poză <i class="fas fa-upload"></i>
+                    </label>
+                    <!-- Imaginea citita se va incarca direct pe ecran in tag-ul "input-imagine". Folosim o functie JavaScript pentru asta. -->
+                    <!-- Imaginea incarcata va fi trimisa catre controller sub forma unui obiect de tip MultipartFile. Pentru asta am adaugat si enctype="multipart/form-data" metoda de encriptare pentru form. -->
+                    <!-- In controller imaginea se seteaza numele corespunzator imaginii, se salveaza in folder si se seteaza animalului. -->
+                  </div>
+                  <!-- mesaj eroare poza -->
+                  <div th:if="${errpoza} != null">
+                    <div class="alert alert-danger">
+                      <p class="text-danger ">Nu am putut încărca poza. Fișiere permise: .jpg și .png</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5 col-xs-6">
+                  <div class="form-group">
+                    <label class="control-label" for="email"> Email </label>
+                    <input id="email" class="form-control" th:field="*{email}" required autofocus="autofocus" />
+                    <br>
+                    <!-- eroare mail format gresit -->
+                    <div th:if="${errmail1} != null" class="alert alert-danger">
+                      <p class="text-danger">Format email nevalid !</p>
+                    </div>
+                    <!-- eroare mail existent -->
+                    <div th:if="${errmail2} != null">
+                      <div class="alert alert-danger">
+                        <p class="text-danger">Email deja existent !</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5 col-xs-6">
+                  <div class="form-group">
+                    <label class="control-label" for="password"> Parolă </label>
+                    <input id="password" class="form-control" type="password" th:field="*{password}" required autofocus="autofocus" />
+                    <br>
+                    <!-- eroare parola prea scurta -->
+                    <div th:if="${errparola} != null" class="alert alert-danger">
+                      <p class="text-danger">Parola este prea scurtă !</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- modal footer -->
+            <div style="text-align: center" class="modal-footer">
+              <button type="button" class="btn btn-secondary col-5 mr-auto" data-dismiss="modal">Închide</button>
+              <button id="butonSubmitAdauga" type="submit" class="btn btn-info col-5 ml-auto">Adaugă</button>
+            </div>
+            <!-- ~~~ Pentru redirectionare pagina curenta si camp sortat~~~ -->
+            <!--Nr paginii -->
+            <input type="text" th:value="${currentPage}" class="form-control" name="currentPage" hidden="true">
+            <!--Numele campului dupa care se face sortarea -->
+            <input type="text" th:value="${sortField}" class="form-control" name="sortField" hidden="true">
+            <!--Directia sortarii-->
+            <input type="text" th:value="${sortDir}" class="form-control" name="sortDir" hidden="true">
+            <!-- Field cautare -->
+            <input type="text" th:value="${fieldSearch}" class="form-control" name="fieldSearch" hidden="true">
+            <!-- Text cautare -->
+            <input type="text" th:value="${txtSearch}" class="form-control" name="txtSearch" hidden="true">
+            <!-- Nume View -->
+            <input type="text" th:value="${numeView}" class="form-control" name="numeView" hidden="true">
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

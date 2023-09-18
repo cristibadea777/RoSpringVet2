@@ -1,0 +1,83 @@
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANGAJATI ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANGAJATI ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ ANGAJATI ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    
+    <!-- Modal detalii angajat - pt pagina angajati-->
+    <div class="modal fade" th:fragment="modal-detalii-angajat" th:id="*{'modalDetaliiAngajat'+{angajat.angajatId}}" tabindex="-1" role="dialog" aria-labelledby="#modalDetaliiAngajat" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h5 class="modal-title w-100" id="titlu" th:text="'Angajatul ' + ${angajat.firstname} + ' ' + ${angajat.lastname}"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <!-- ROW 1 -->
+            <div class="row">
+              <!-- ROW 1 COL 1-->
+              <!-- ROW 1 COL 1-->
+              <div class="col my-auto text-center">
+                <img th:id="*{'input-imagine-profil'+{angajat.angajatId}}"
+                		th:src="@{/resources/poze_angajati/{img}(img=${angajat.imagine != null ? angajat.imagine : 'angajat_default.png'} ) }"
+                 		class="img-responsive" src="../static/images/photo.png"
+                 		style="height: 25vh; max-width: 25vh; border-radius: 50%; border: 0.2vw solid #00FFFF;">
+              </div>
+              <!-- ROW 1 COL 2-->
+              <!-- ROW 1 COL 2-->
+              <div class="col my-auto">
+                <div class="row">
+                  <div class="col">
+                    <strong>Nume</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="|${angajat.firstname} ${angajat.lastname}|"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Nr Telefon</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${angajat.nrtelefon}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Email</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${angajat.email}"></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <strong>Total vizite</strong>
+                  </div>
+                  <div class="col my-auto">
+                    <label th:text="${angajat.vizite.size()}"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <div class="row" style="white-space: nowrap;">
+              <div class="col">
+              </div>
+              <div class="col">
+                <div class="row">
+                  <a th:href="@{/viziteAngajat/{id}(id=${angajat.angajatId})}" class="btn btn-primary mr-1 mb-1 btn-block"> Vezi Vizite <i class="fas fa-scroll"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Închide</button>
+		  </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RoSpringVet - Eroare</title>
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- CSS nostru -->
+	<link rel="stylesheet" href="/css/eroare.css">
+    <!-- Pentru glyphicon-uri -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- JS ca sa mearga modal-ul cu bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+</head>
+
+
+<body>
+<!-- th replace pt navbar -->
+<div th:replace="fragments/topnavbar :: navbar1">
+</div>
+	<div class="container-principal">
+		
+		<div class="text">
+			<h1><strong>Eroare - ceva nu a mers bine</strong></h1>
+			<h1><strong>Inginerii noștri lucrează la asta</strong></h1>
+		</div>
+
+		<div class="poza">	
+			<img
+				class="img-responsive" 
+				src="../static/images/angora2.png" 
+				style="
+					height:33vh; 
+					max-width:50vw;
+					border-radius: 33%; 
+		   			border: 0.2vw solid #00FFFF;"
+				th:src="@{/images/Fetița_inginer.jpg}" 
+			/>
+		</div>
+		
+		<div class="acasa">
+			<h3>Întoarce-te <a href="/">acasă</a></h3>
+		</div>
+						
+	</div>	
+</body>
+</html>

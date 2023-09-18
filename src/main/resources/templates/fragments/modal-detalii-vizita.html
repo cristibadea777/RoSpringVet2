@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <!-- Modal detalii vizită-->
+    <!-- Modal detalii vizită-->
+    <!-- Modal detalii vizită-->
+    <div class="modal fade" th:fragment="modal-detalii-vizita" th:id="*{'modalDetaliiVizita'+{vizita.vizitaId}}" tabindex="-1" role="dialog" aria-labelledby="#modalVizitaNouaAnimal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title w-100 text-center" id="titlu">Detalii vizită</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-5 col-xs-7">
+                <div class="row"> &nbsp;&nbsp;&nbsp; <h5>Stăpânul: &nbsp;</h5>
+                  <h5 style="color: blue;" th:text="${vizita.numestapan}"></h5>
+                </div>
+                <div class="row"> &nbsp;&nbsp;&nbsp; <h5>Animalul: &nbsp;</h5>
+                  <h5 style="color: blue;" th:text="${vizita.numeanimal}"></h5>
+                </div>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <div class="col-md-5 col-xs-7 text-center">
+                <img class="img-responsive" th:src="@{/resources/poze_animale/{img}(img=${vizita.animalId.imagine != null ? vizita.animalId.imagine : 'animal_default.png'} ) }" width="1000" style="height:12vh; max-width:12vh; border-radius: 50%; border: 0.2vw solid #00FFFF;" />
+              </div>
+              <!--VIZITA -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Motivul vizitei</h4>
+                <strong style="color: blue;" th:text="*{vizita.motiv}"></strong>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <div class="col-md-5 col-xs-6">
+                <h4>Data și ora vizitei</h4>
+                <strong style="color: blue;" th:text="*{vizita.date}"></strong>
+              </div>
+              <!-- DIAGNOSTIC -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Diagnostic</h4>
+                <textarea type="text" style="color: blue;" th:text="*{vizita.diagnosticId.diagnostic}" class="form-control " rows="5"></textarea>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <!-- TRATAMENT -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Metodă tratament</h4>
+                <textarea type="text" style="color: blue;" th:text="*{vizita.tratamentId.metodatratament}" class="form-control " rows="5"></textarea>
+              </div>
+              <!-- ANGAJAT -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Veterinar</h4>
+                <strong style="color: blue;" th:text="*{vizita.numeangajat}"></strong>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <div class="col-md-5 col-xs-7">
+                <h4>Dată începere tratament</h4>
+                <strong style="color: blue;" th:text="*{vizita.tratamentId.datainceput}"></strong>
+              </div>
+              <div class="col-md-6 col-xs-7"></div>
+              <div class="col-md-5 col-xs-7">
+                <h4>Dată terminare tratament</h4>
+                <strong style="color: blue;" th:text="*{vizita.tratamentId.datasfarsit}"></strong>
+              </div>
+              <div class="col-md-6 col-xs-7">
+                <br>
+              </div>
+            </div>
+          </div>
+          <!-- modal footer -->
+          <div style="text-align: center" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal detalii vizită TRATAMENT-->
+    <!-- Modal detalii vizită TRATAMENT-->
+    <!-- Modal detalii vizită TRATAMENT-->
+    <div class="modal fade" th:fragment="modal-detalii-vizita-tratament" th:id="*{'modalDetaliiVizitaTratament'+{tratament.tratamentId}}" tabindex="-1" role="dialog" aria-labelledby="modalDetaliiVizitaTratament" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title w-100 text-center" id="titlu">Detalii vizită</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&cross;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-5 col-xs-7">
+                <div class="row"> &nbsp;&nbsp;&nbsp; <h5>Stăpânul: &nbsp;</h5>
+                  <h5 style="color: blue;" th:text="${tratament.vizitaId.numestapan}"></h5>
+                </div>
+                <div class="row"> &nbsp;&nbsp;&nbsp; <h5>Animalul: &nbsp;</h5>
+                  <h5 style="color: blue;" th:text="${tratament.vizitaId.numeanimal}"></h5>
+                </div>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <div class="col-md-5 col-xs-7 text-center">
+                <img class="img-responsive" th:src="@{/resources/poze_animale/{img}(img=${tratament.animalId.imagine != null ? tratament.animalId.imagine : 'animal_default.png'} ) }" width="1000" style="height:12vh; max-width:12vh; border-radius: 50%; border: 0.2vw solid #00FFFF;" />
+              </div>
+              <!--VIZITA -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Motivul vizitei</h4>
+                <strong style="color: blue;" th:text="*{tratament.vizitaId.motiv}"></strong>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <div class="col-md-5 col-xs-6">
+                <h4>Data și ora vizitei</h4>
+                <strong style="color: blue;" th:text="*{tratament.vizitaId.date}"></strong>
+              </div>
+              <!-- DIAGNOSTIC -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Diagnostic</h4>
+                <textarea type="text" style="color: blue;" th:text="*{tratament.diagnosticId.diagnostic}" class="form-control " rows="5"></textarea>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <!-- TRATAMENT -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Metodă tratament</h4>
+                <textarea type="text" style="color: blue;" th:text="*{tratament.metodatratament}" class="form-control " rows="5"></textarea>
+              </div>
+              <!-- ANGAJAT -->
+              <div class="col-md-5 col-xs-7">
+                <h4>Veterinar</h4>
+                <strong style="color: blue;" th:text="*{tratament.vizitaId.numeangajat}"></strong>
+              </div>
+              <div class="col-md-1 col-xs-7"></div>
+              <div class="col-md-5 col-xs-7">
+                <h4>Dată începere tratament</h4>
+                <strong style="color: blue;" th:text="*{tratament.datainceput}"></strong>
+              </div>
+              <div class="col-md-6 col-xs-7"></div>
+              <div class="col-md-5 col-xs-7">
+                <h4>Dată terminare tratament</h4>
+                <strong style="color: blue;" th:text="*{tratament.datasfarsit}"></strong>
+              </div>
+              <div class="col-md-6 col-xs-7">
+                <br>
+              </div>
+            </div>
+          </div>
+          <!-- modal footer -->
+          <div style="text-align: center" class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </body>
+</html>

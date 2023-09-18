@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div th:fragment="div-pagini" class="pagini">
+  <div style="display: flex; float:right;">
+    <p>Pagina: [[${currentPage}]]/[[${totalPages}]]</p>
+  </div>
+  <div th:if="${totalPages > 1}">
+    <button class="btn btn-secondary" th:if="${currentPage <= totalPages}" th:onclick="paginaPrima();">Prima pagină </button>
+    <button class="btn btn-secondary" th:if="${currentPage <= totalPages and currentPage > 1}" th:onclick="paginaInapoi();">
+      <i class="fas fa-arrow-circle-left"></i> Înapoi </button>
+    <button class="btn btn-secondary" th:if="${currentPage < totalPages}" th:onclick="paginaInainte()"> Înainte <i class="fas fa-arrow-circle-right"></i>
+    </button>
+    <button class="btn btn-secondary" th:onclick="paginaUltima()"> Ultima pagină </button>
+  </div>
+  
+</div>
+
+</body>
+</html>
